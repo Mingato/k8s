@@ -1,0 +1,167 @@
+version: '3.2'
+
+networks:
+    wm3-network:
+        driver: bridge
+
+services:
+    #nginx:
+    #    build:
+    #        dockerfile: ./kubernetes/nginx/nginx.dockerfile
+    #        context: ./kubernetes/nginx/
+    #    image: wm3/nginx
+    #    container_name: nginx
+    #    ports:
+    #        - "80:80"
+    #        - "443:443"
+    #        - "8080:8080"
+    #    networks:
+    #        - wm3-network
+    #    restart: always
+
+    mongo:
+        image: mongo
+        volumes:
+            - //c/data/db:/data/db
+        container_name: mongo
+        ports:
+            - "27017:27017"
+        networks:
+            - wm3-network
+        restart: always
+        environment:
+            - AUTH=yes
+            - MONGO_INITDB_ROOT_USERNAME=admin
+            - MONGO_INITDB_ROOT_PASSWORD=red321Company
+        
+    auth:
+        build:
+            dockerfile: ../auth/Dockerfile
+            context: ../auth/
+        image: wm3/auth-service
+        container_name: auth-service
+        ports:
+            - 8080
+        networks:
+            - wm3-network
+        restart: always
+        depends_on:
+            - "mongo"
+        environment:
+            MONGODB_URI: "mongodb://generalUser:redOliNan4679@mongo:27017/auth?authSource=admin&readPreference=primary"
+            DOMAIN: "https://local.webmodule.com.br"
+            CLIENT_ID: angular
+            CLIENT_SECRET: "red_wm3@an6u1@r%"
+            CLIENT_ID_API: api
+            CLIENT_SECRET_API: "api_wm3@p15re8%"
+    
+    notification:
+        build:
+            dockerfile: ../notification/Dockerfile
+            context: ../notification/
+        image: wm3/notification
+        container_name: notification
+        ports:
+            - "10008:10008"
+        networks:
+            - wm3-network
+        restart: always
+        depends_on:
+            - "mongo"
+            - "auth"
+        environment:
+            MONGODB_URI: "mongodb://generalUser:redOliNan4679@mongo:27017/notification?authSource=admin&readPreference=primary"
+            DOMAIN: "https://local.webmodule.com.br"
+            CLIENT_ID: angular
+            CLIENT_SECRET: "red_wm3@an6u1@r%"
+            TOKNEN_INFO_URI: https://local.webmodule.com.br/auth/oauth/check_token
+    
+    storage:
+        build:
+            dockerfile: ../storage/Dockerfile
+            context: ../storage/
+        image: wm3/storage
+        container_name: storage
+        ports:
+            - "10003:10003"
+        networks:
+            - wm3-network
+        restart: always
+        depends_on:
+            - "auth"
+        environment:
+            DOMAIN: "https://local.webmodule.com.br"
+            CLIENT_ID: angular
+            CLIENT_SECRET: "red_wm3@an6u1@r%"
+            TOKNEN_INFO_URI: https://local.webmodule.com.br/auth/oauth/check_token
+
+    news:
+        build:
+            dockerfile: ../news/Dockerfile
+            context: ../news/
+        image: wm3/news
+        container_name: news
+        ports:
+            - "10002:10002"
+        networks:
+            - wm3-network
+        restart: always
+        depends_on:
+            - "mongo"
+            - "auth"
+            - "storage"
+        environment:
+            MONGODB_URI_PRIMARY: "mongodb://generalUser:redOliNan4679@mongo:27017/news?authSource=admin&readPreference=primary"
+            MONGODB_URI_SECONDARY: "mongodb://generalUser:redOliNan4679@mongo:27017/auth?authSource=admin&readPreference=primary"
+            DOMAIN: "https://local.webmodule.com.br"
+            CLIENT_ID: angular
+            CLIENT_SECRET: "red_wm3@an6u1@r%"
+            TOKNEN_INFO_URI: https://local.webmodule.com.br/auth/oauth/check_token
+    
+    chat:
+        build:
+            dockerfile: ../chat/Dockerfile
+            context: ../chat/
+        image: wm3/chat
+        container_name: chat
+        ports:
+            - "10001:10001"
+        networks:
+            - wm3-network
+        restart: always
+        depends_on:
+            - "mongo"
+            - "auth"
+            - "storage"
+        environment:
+            MONGODB_URI_PRIMARY: "mongodb://generalUser:redOliNan4679@mongo:27017/chat?authSource=admin&readPreference=primary"
+            MONGODB_URI_SECONDARY: "mongodb://generalUser:redOliNan4679@mongo:27017/auth?authSource=admin&readPreference=primary"
+            DOMAIN: "https://local.webmodule.com.br"
+            CLIENT_ID: angular
+            CLIENT_SECRET: "red_wm3@an6u1@r%"
+            TOKNEN_INFO_URI: https://local.webmodule.com.br/auth/oauth/check_token
+    
+    socket:
+        build:
+            dockerfile: ../socket/Dockerfile
+            context: ../socket/
+        image: wm3/socket
+        container_name: socket
+        ports:
+            - "10004:10004"
+            - "10005:10005"
+        networks:
+            - wm3-network
+        restart: always
+        depends_on:
+            - "auth"
+
+    demo:
+        build:
+            dockerfile: ../demo/Dockerfile
+            context: ../demo/
+        image: demo
+        container_name: demo
+        ports:
+            - 8080
+        restart: always

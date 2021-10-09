@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-service
+  #namespace: wm3 #create a new namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  template:
+    metadata:
+      name: demo-service
+      labels:
+        app: demo-service
+        version: v1
+    spec:
+      containers:
+      - name: demo-service
+        image: demo
+        imagePullPolicy: IfNotPresent # <-- change to Always
+        ports:
+          - containerPort: 8080
+        env:
+          - name: JAVA_OPTS
+            value: "-server -Dlogging.level.org.springframework=INFO,DEBUG,ERROR -Dlogging.root=INFO,DEBUG,ERROR"  #-XX:+PrintFlagsFinal -Xms512m -Xmx2000m -Djava.util.concurrent.ForkJoinPool.common.parallelism=40
+        #livenessProbe: #verificar o health do container
+        #  httpGet:
+        #    path: /actuator/health # ver qual caminha para verificar se esta saudavel
+        #    port: 8080
+        #  initialDelaySeconds: 300
+        #  periodSeconds: 30
+        #  failureThreshold: 4
+        #readinessProbe: #a aplicação estará pronta para receber requisição a partir do momento que receber sucesso no get do path
+        #  httpGet:
+        #    path: /actuator/health
+        #    port: 8080
+        #  initialDelaySeconds: 300 
+        #  periodSeconds: 30
+        #  failureThreshold: 7
+        resources:
+          limits:
+            cpu: 200m
+            #memory: 4000Mi
+          requests:
+            cpu: 100m
+            #memory: 1000Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-service
+spec:
+  type: NodePort
+  selector:
+    app: demo-service
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30050

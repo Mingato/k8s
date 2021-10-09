@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: chat
+      labels:
+        app: chat
+    spec:
+      containers:
+        - name: chat
+          image: wm3/chat
+          imagePullPolicy: IfNotPresent # <-- change to Always
+          ports:
+            - containerPort: 10001
+          envFrom:
+            - configMapRef:
+                name: config
+          env:
+            - name: "MONGODB_URI_PRIMARY"
+              value: "mongodb://generalUser:redOliNan4679@10.100.109.254:27017/chat?authSource=admin&readPreference=primary"
+            - name: "MONGODB_URI_SECONDARY"
+              value: "mongodb://generalUser:redOliNan4679@10.100.109.254:27017/auth?authSource=admin&readPreference=primary"
