@@ -37,7 +37,7 @@ spec:
       volumes:
       - name: mongo-volume
         hostPath:
-          path: /C/data/db
+          path: /C/data/db2
           type: DirectoryOrCreate
 ---
 apiVersion: v1

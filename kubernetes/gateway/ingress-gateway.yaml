@@ -7,6 +7,13 @@ spec:
   selector:
     istio: ingressgateway # use istio default controller
   servers:
+  
+    - port:
+        number: 27017
+        name: http-mongo
+        protocol: HTTP
+      hosts:
+        - "*"
     - port:
         number: 80
         name: http
@@ -68,4 +75,16 @@ spec:
       #      number: 80
       redirect:
         uri: /auth/pages/login.html
-  
+
+    - match:
+      - uri:
+          prefix: /mongodb
+      route:
+      - destination:
+          host: auth-service #label
+          #subset: v1
+          port: 
+            number: 27017
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
