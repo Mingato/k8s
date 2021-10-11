@@ -8,10 +8,8 @@ spec:
     matchLabels:
       istio: ingressgateway
   jwtRules:
-    #- forwardOriginalToken: true
-    #  issuer: http://auth-service/base/userInfo
-    - issuer: "testing@secure.istio.io"
-      jwksUri: "https://raw.githubusercontent.com/istio/istio/release-1.11/security/tools/jwt/samples/jwks.json"
+    - issuer: "*"
+      jwksUri: "http://auth-service/.well-known/jwks.json"
 ---
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
