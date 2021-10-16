@@ -37,18 +37,17 @@ spec:
       volumes:
       - name: mongo-volume
         hostPath:
-          path: /C/data/db2
+          path: /C/data/db
           type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-pod-mongo
+  name: mongodb-pod
 spec:
   type: NodePort
   selector:
     app: mongo
   ports:
     - port: 27017
-      targetPort: 27017
       nodePort: 30100

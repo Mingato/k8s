@@ -1,15 +1,15 @@
 apiVersion: security.istio.io/v1beta1
 kind: RequestAuthentication
 metadata:
-  name: "jwt-example"
+  name: jwt-authentication
   namespace: istio-system
 spec:
   selector:
     matchLabels:
       istio: ingressgateway
   jwtRules:
-    - issuer: "*"
-      jwksUri: "http://auth-service/.well-known/jwks.json"
+    - issuer: "wm3@redcompany.com.br"
+      jwksUri: "http://auth-service:8080/.well-known/jwks.json"
 ---
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
@@ -27,5 +27,4 @@ spec:
         notRequestPrincipals: ["*"]
     to:
     - operation:
-        paths: ["/auth/*", "/demo-service/*"]
-#get token https://raw.githubusercontent.com/istio/istio/release-1.11/security/tools/jwt/samples/demo.jwt
+        paths: ["/auth/*"]

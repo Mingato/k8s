@@ -62,7 +62,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-pod-mongo
+  name: mongodb-pod
 
 spec:
   type: NodePort # "ClusterIP" para comunicação interna

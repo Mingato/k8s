@@ -40,33 +40,36 @@ spec:
           - containerPort: 8080
         env:
           - name: "MONGODB_URI"
-            #value: "mongodb://admin:red321Company@10.106.252.208:27017/auth?authSource=admin&readPreference=primary&ssl=false"
-            value: "mongodb://admin:red321Company@svc-pod-mongo:27017/auth?authSource=admin&readPreference=primary&ssl=false"
+            value: "mongodb://admin:red321Company@mongodb-pod:27017/auth?authSource=admin&readPreference=primary&ssl=false"
           - name: "CLIENT_ID_API"
             value: "api"
           - name: "CLIENT_SECRET_API"
             value: "api_wm3@p15re8%"
+          - name: "PUBLIC_KEY_FILE"
+            value: "public_key.pem"
+          - name: "PRIVATE_KEYFILE"
+            value: "private_key.pem"
           - name: JAVA_OPTS
             value: "-server -Dlogging.level.org.springframework=INFO,DEBUG,ERROR -Dlogging.root=INFO,DEBUG,ERROR"  #-XX:+PrintFlagsFinal -Xms512m -Xmx2000m -Djava.util.concurrent.ForkJoinPool.common.parallelism=40
         envFrom:
           - configMapRef:
               name: config
-        livenessProbe: #verificar o health do container
-          httpGet:
-            path: /actuator/health # ver qual caminha para verificar se esta saudavel
-            port: 8080
-          initialDelaySeconds: 240
-          periodSeconds: 30
-          timeoutSeconds: 60
-          failureThreshold: 8
-        readinessProbe: #a aplicação estará pronta para receber requisição a partir do momento que receber sucesso no get do path
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 180
-          periodSeconds: 60
-          timeoutSeconds: 60
-          failureThreshold: 8
+        #livenessProbe: #verificar o health do container
+        #  httpGet:
+        #    path: /actuator/health # ver qual caminha para verificar se esta saudavel
+        #    port: 8080
+        #  initialDelaySeconds: 360
+        #  periodSeconds: 30
+        #  timeoutSeconds: 60
+        #  failureThreshold: 8
+        #readinessProbe: #a aplicação estará pronta para receber requisição a partir do momento que receber sucesso no get do path
+        #  httpGet:
+        #    path: /actuator/health
+        #    port: 8080
+        #  initialDelaySeconds: 240
+        #  periodSeconds: 60
+        #  timeoutSeconds: 60
+        #  failureThreshold: 8
         resources:
           limits:
             cpu: 200m
