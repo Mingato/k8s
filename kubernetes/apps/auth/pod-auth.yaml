@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: config
 data:
-  #MONGODB_URI: "mongodb://generalUser:redOliNan4679@localhost:30100"
+  #MONGODB_URI: "mongodb://generalUser:redOliNan4679@monho:30100"
   DOMAIN: "https://local.webmodule.com.br"
   CLIENT_ID: "angular"
   CLIENT_SECRET: "red_wm3@an6u1@r%"
@@ -40,7 +40,7 @@ spec:
           - containerPort: 8080
         env:
           - name: "MONGODB_URI"
-            value: "mongodb://admin:red321Company@mongodb-pod:27017/auth?authSource=admin&readPreference=primary&ssl=false"
+            value: "mongodb://admin:red321Company@mongo:27017/auth?authSource=admin&readPreference=primary&ssl=false"
           - name: "CLIENT_ID_API"
             value: "api"
           - name: "CLIENT_SECRET_API"
@@ -91,9 +91,7 @@ spec:
   ports:
     - name: http
       port: 8080
-      protocol: TCP
       targetPort: 8080
-      #nodePort: 30001 # external port
       
 ---
 #versions: https://github.com/kubernetes-sigs/metrics-server/
@@ -116,10 +114,10 @@ spec:
         target:
           type: Utilization
           averageUtilization: 50
-  behavior: 
-    scaleDown: 
+  behavior:
+    scaleDown:
       stabilizationWindowSeconds: 300
-      policies: 
+      policies:
       - type: Pods
         value: 1
         periodSeconds: 180

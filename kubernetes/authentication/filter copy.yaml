@@ -1,0 +1,61 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: my-auth-token-transformer
+  namespace: istio-system
+spec:
+  workloadSelector:
+    labels:
+      istio: ingressgateway
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: GATEWAY
+      listener:
+        filterChain:
+          filter:
+            name: "envoy.filters.network.http_connection_manager"
+        portNumber: 8443
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: my.filters.auth.token_transformer
+        typed_config:
+          "@type": "type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua"
+          inlineCode: |
+            function stringSplit(inputstr, sep)
+              if sep == nil then
+                sep = "%s"
+              end
+              local t={}
+              for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+                table.insert(t, str)
+              end
+              return t
+            end
+
+            function envoy_on_request(handle) 
+              headers = handle:headers()
+
+              path = headers:get(":path")
+              if path == "/health" or path == "/metrics" then
+                return
+              end
+
+              cookieString = headers:get("cookie")
+              if cookieString ~= nil then
+                splitCookieString = stringSplit(cookieString, ";")
+                
+                jwt = nil
+                for i, cookieItem in ipairs(splitCookieString) do
+                  if string.find(cookieItem, "accessToken") ~= nil then
+                    jwt = string.gsub(cookieItem, "accessToken=", "")
+                  end
+                end
+
+                if jwt ~= nil then
+                  token = string.gsub(jwt, "^ ", "")
+                  headers:replace("Authorization", "Bearer "..token)
+                end
+              end
+            end

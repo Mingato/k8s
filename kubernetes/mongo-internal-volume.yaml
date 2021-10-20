@@ -62,7 +62,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb-pod
+  name: mongo
 
 spec:
   type: NodePort # "ClusterIP" para comunicação interna
@@ -70,5 +70,5 @@ spec:
     run: mongo
   ports:
     - port: 27017
-      targetPort: 27017
-      nodePort: 30100
+      #targetPort: 27017
+      #nodePort: 30100

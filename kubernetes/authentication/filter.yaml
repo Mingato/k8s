@@ -1,0 +1,68 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: my-auth-token-transformer
+  namespace: istio-system
+spec:
+  workloadSelector:
+    labels:
+      istio: ingressgateway
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      #context: GATEWAY
+      listener:
+        filterChain:
+          filter:
+            name: "envoy.filters.network.http_connection_manager"
+            subFilter:
+              name: "envoy.filters.http.router"
+    patch:
+      operation: INSERT_FIRST
+      value:
+        name: my.filters.auth.token_transformer
+        typed_config:
+          "@type": "type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua"
+          inlineCode: |
+            function stringSplit(inputstr, sep)
+              if sep == nil then
+                sep = "%s"
+              end
+              local t={}
+              for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+                table.insert(t, str)
+              end
+              return t
+            end
+
+            function envoy_on_request(request_handle)
+              
+
+              headers = request_handle:headers()
+
+              path = headers:get(":path")
+              if path == "/health" or path == "/metrics" then
+                return
+              end
+
+              cookieString = headers:get("cookie")
+              if cookieString ~= nil then
+                splitCookieString = stringSplit(cookieString, ";")
+                
+                jwt = nil
+                for i, cookieItem in ipairs(splitCookieString) do
+                  if string.find(cookieItem, "accessToken") ~= nil then
+                    jwt = string.gsub(cookieItem, "accessToken=", "")
+                  end
+                end
+
+                if jwt ~= nil then
+                  token = string.gsub(jwt, "^ ", "")
+                  headers:replace("Authorization", "Bearer "..token)
+                end
+              end
+            end
+            function envoy_on_response(response_handle)
+                response_handle:headers():add("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2RpZ29zUGVyZmlsIjpbIlNVUEVSIiwiQURNSU5JU1RSQURPUiIsImFkbWluIl0sImVkaXRvckRlTm90aWNpYSI6bnVsbCwic3ViIjoid20zQHJlZGNvbXBhbnkuY29tLmJyIiwidXNlcl9uYW1lIjoiZ3VudGVybWluZ2F0b0BnbWFpbC5jb20iLCJpc3MiOiJ3bTNAcmVkY29tcGFueS5jb20uYnIiLCJjb2RpZ29zR3J1cG8iOlsiU1VQRVIiLCJDaGF0X2FkbWluIl0sIm5vbWUiOiJHdW50ZXIgTWluZ2F0byIsInVybEltYWdlbSI6Ii9zdG9yYWdlL2ZpbGVzL3VzZXJzL2RlZmF1bHQuanBnIiwiYXV0aG9yaXRpZXMiOlsiQURNSU5JU1RSQURPUiIsImFkbWluIiwiU1VQRVIiXSwiY2xpZW50X2lkIjoiYW5ndWxhciIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJpZCI6IjVjOTRmZmNkZTRiMDNkNzRlMTJjNTZhNSIsImV4cCI6MTYzNDY5Mjg3OSwianRpIjoiNTg4ZmViN2QtYTYzOS00MzZlLWI3NTAtYjA3OTZlNjdiM2U2In0.jBvvIhHi8lorQzSREqQ27aNtmkIlHiAXZ9oypqWx-lrHb65q_3CDWDjgo_AVeQ-43xxfkQj1OkbmEtkkLYMZA0mRwgm7N_n8x4ifpUII2FU-X1IEeJ8eMcMxO9D7gIaL-bAVUlwmvklDmcgog_abV8BAC2XJg6Fs56lwT9A8__tay_xLS1XPDbJ4_zAhwBwXIiyg6cFutoWcfXtjeBblkAQ-RP89AnWkTL_-lUWkt2MwahhCxX-msI4xHtbBKCzqILtJjFBcAeOEo0CWYjZBJ-8t5LP_R28zjyS06wpeXpsnEkdnuXX7a4nj60OJlxJ32ME8Sx7saOLkG-wKppHi-g")
+                response_handle:headers():add("my_Filter", "ENVOY funcionou bem")
+            end

@@ -2,37 +2,33 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata: 
-  name: mongo-ingressgateway
+  name: mongo-gateway
 spec:
   selector:
     istio: ingressgateway # use istio default controller
   servers:
-  
     - port:
-        number: 27017
+        number: 31018 #15021:31149/TCP,80:32633/TCP,443:32725/TCP,31400:31357/TCP,15443:31507/TCP
         name: mongo-tcp
-        protocol: TCP
+        protocol: MONGO
       hosts:
         - "*"
 ---
-
+#kubectl port-forward svc/mongo -n default 27017
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
-metadata: 
-  name: virtual-mongodb
+metadata:
+  name: mongo-vitual
 spec:
   hosts:
   - "*"
   gateways:
-  - mongo-ingressgateway
-  http:
+  - mongo-gateway
+  tcp:
     - match:
-      #- uri:
-      #    prefix: /
+        - port: 27017
       route:
-      - destination:
-          host: mongodb-pod #label
-          port: 
-            number: 27017
-      #rewrite:
-      #  uri: /
+        - destination:
+            host: mongo
+            port:
+              number: 27017
