@@ -29,9 +29,9 @@ spec:
               name: config
         env:
           - name: "MONGODB_URI_PRIMARY"
-            value: "mongodb://generalUser:redOliNan4679@mongo:27017/chat?authSource=admin&readPreference=primary"
+            value: "mongodb://admin:red321Company@mongo:27017/chat?authSource=admin&readPreference=primary"
           - name: "MONGODB_URI_SECONDARY"
-            value: "mongodb://generalUser:redOliNan4679@mongo:27017/auth?authSource=admin&readPreference=primary"
+            value: "mongodb://admin:red321Company@mongo:27017/auth?authSource=admin&readPreference=primary"
         resources:
           limits:
             cpu: 200m

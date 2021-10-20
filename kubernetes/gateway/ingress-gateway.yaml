@@ -49,6 +49,19 @@ spec:
 
     - match:
       - uri:
+          prefix: /chat/
+      route:
+      - destination:
+          host: chat-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+
+    - match:
+      - uri:
           prefix: /demo-service
       route:
       - destination:

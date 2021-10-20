@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: config
 data:
-  #MONGODB_URI: "mongodb://generalUser:redOliNan4679@monho:30100"
+  #MONGODB_URI: "mongodb://admin:red321Company@monho:30100"
   DOMAIN: "https://local.webmodule.com.br"
   CLIENT_ID: "angular"
   CLIENT_SECRET: "red_wm3@an6u1@r%"
