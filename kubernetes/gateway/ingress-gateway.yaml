@@ -62,11 +62,76 @@ spec:
 
     - match:
       - uri:
-          prefix: /demo-service
+          prefix: /news/
+      route:
+      - destination:
+          host: news-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
+          prefix: /storage/
+      route:
+      - destination:
+          host: storage-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
+          prefix: /notification/
+      route:
+      - destination:
+          host: notification-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
+          prefix: /socket/
+      route:
+      - destination:
+          host: socket-service #label
+          #subset: v1
+          port:
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
+          prefix: /up/
+      route:
+      - destination:
+          host: up-service #label
+          #subset: v1
+          port:
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+
+    - match:
+      - uri:
+          prefix: /demo-service/
       route:
       - destination:
           host: demo-service #label
-          port: 
+          port:
             number: 8080
       rewrite:
         uri: /
