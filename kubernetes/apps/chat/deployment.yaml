@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: chat-service
 spec:
-  replicas: 1
+  #replicas: 1
   selector:
     matchLabels:
       app: chat-service
@@ -21,39 +21,45 @@ spec:
       containers:
       - name: chat-service
         image: wm3/chat-service
-        imagePullPolicy: IfNotPresent # <-- change to Always
+        imagePullPolicy: IfNotPresent #TODO: Always
         ports:
           - containerPort: 8080
         envFrom:
           - configMapRef:
               name: config
         env:
-          - name: "MONGODB_URI_PRIMARY"
-            value: "mongodb://admin:red321Company@mongo:27017/chat?authSource=admin&readPreference=primary"
-          - name: "MONGODB_URI_SECONDARY"
+          - name: "FOUNDATION_DATABASE_URL"
+            #value: jdbc:datadirect:openedge://openedge-service:24641;databaseName=ems2web; autoReconnect=true;user=sysprogress;password=sysprogress
+            value: jdbc:datadirect:openedge://external-db:24641;databaseName=ems2web; autoReconnect=true;user=sysprogress;password=sysprogress
+          - name: "MONGODB_APP_URI"
             value: "mongodb://admin:red321Company@mongo:27017/auth?authSource=admin&readPreference=primary"
+          - name: PUSH_NOTIFICATION_URL
+            value: notification-service
+          - name: SOCKET_URL
+            value: socket-service
+        #livenessProbe: #verificar o health do container
+        #  httpGet:
+        #    path: /actuator/health # ver qual caminha para verificar se esta saudavel
+        #    port: 8080
+        #  initialDelaySeconds: 300
+        #  periodSeconds: 30
+        #  timeoutSeconds: 60
+        #  failureThreshold: 8
+        #readinessProbe: #a aplicação estará pronta para receber requisição a partir do momento que receber sucesso no get do path
+        #  httpGet:
+        #    path: /actuator/health
+        #    port: 8080
+        #  initialDelaySeconds: 240
+        #  periodSeconds: 60
+        #  timeoutSeconds: 60
+        #  failureThreshold: 9
         resources:
           limits:
-            cpu: 200m
-            #memory: 4000Mi
-          requests:
             cpu: 100m
-            #memory: 1000Mi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: chat-service
-  labels:
-    app: chat-service
-spec:
-  type: NodePort
-  selector:
-    app: chat-service
-  ports:
-    - name: http
-      port: 8080
-      targetPort: 8080
+            memory: 300Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
 ---
 #versions: https://github.com/kubernetes-sigs/metrics-server/
 #kubectl apply -f components.yaml
@@ -75,10 +81,10 @@ spec:
         target:
           type: Utilization
           averageUtilization: 50
-  behavior: 
-    scaleDown: 
+  behavior:
+    scaleDown:
       stabilizationWindowSeconds: 300
-      policies: 
+      policies:
       - type: Pods
         value: 1
         periodSeconds: 180

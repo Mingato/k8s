@@ -1,0 +1,12 @@
+version: '3.2'
+
+services:
+    up:
+        build:
+            dockerfile: ../socket/Dockerfile
+            context: ../socket/
+        image: wm3/socket-service
+        container_name: socket-service
+        ports:
+            - "8080:8080"
+            - "8081:8081"

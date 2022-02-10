@@ -1,0 +1,3 @@
+kubectl port-forward svc/argocd-server -n argocd 8082:443
+
+kubectl port-forward svc/kiali -n istio-system 20001

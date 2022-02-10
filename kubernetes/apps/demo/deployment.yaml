@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-service
+  #namespace: wm3 #create a new namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  template:
+    metadata:
+      name: demo-service
+      labels:
+        app: demo-service
+        version: v1
+    spec:
+      containers:
+      - name: demo-service
+        image: wm3/demo-service
+        imagePullPolicy: IfNotPresent #TODO: Always
+        ports:
+          - containerPort: 8080
+        env:
+          - name: JAVA_OPTS
+            value: "-server -Dlogging.level.org.springframework=INFO,DEBUG,ERROR -Dlogging.root=INFO,DEBUG,ERROR"  #-XX:+PrintFlagsFinal -Xms512m -Xmx2000m -Djava.util.concurrent.ForkJoinPool.common.parallelism=40
+        resources:
+          limits:
+            cpu: 300m
+            memory: 300Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi

@@ -21,7 +21,7 @@ spec:
       containers:
       - name: up-service
         image: wm3/up-service
-        imagePullPolicy: IfNotPresent # <-- change to Always
+        imagePullPolicy: IfNotPresent #TODO: Always
         ports:
           - containerPort: 8080
         env:
@@ -29,51 +29,36 @@ spec:
             value: ""
         resources:
           limits:
-            cpu: 200m
-            #memory: 4000Mi
-          requests:
             cpu: 100m
-            #memory: 1000Mi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: up-service
-  labels:
-    app: up-service
-spec:
-  type: NodePort
-  selector:
-    app: up-service
-  ports:
-    - name: http
-      port: 8080
-      targetPort: 8080
----
+            memory: 300Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+#---
 #versions: https://github.com/kubernetes-sigs/metrics-server/
 #kubectl apply -f components.yaml
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: up-service
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: up-service
-  minReplicas: 1
-  maxReplicas: 1
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 50
-  behavior: 
-    scaleDown: 
-      stabilizationWindowSeconds: 300
-      policies: 
-      - type: Pods
-        value: 1
-        periodSeconds: 180
+#apiVersion: autoscaling/v2beta2
+#kind: HorizontalPodAutoscaler
+#metadata:
+#  name: up-service
+#spec:
+#  scaleTargetRef:
+#    apiVersion: apps/v1
+#    kind: Deployment
+#    name: up-service
+#  minReplicas: 1
+#  maxReplicas: 1
+#  metrics:
+#    - type: Resource
+#      resource:
+#        name: cpu
+#        target:
+#          type: Utilization
+#          averageUtilization: 50
+#  behavior: 
+#    scaleDown: 
+#      stabilizationWindowSeconds: 300
+#      policies: 
+#      - type: Pods
+#        value: 1
+#        periodSeconds: 180

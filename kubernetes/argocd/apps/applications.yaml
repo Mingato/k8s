@@ -1,0 +1,261 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: applications
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/argocd/apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+  #  syncOptions:
+  #    - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gateway
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/gateway
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentication
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/authentication
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mongodb
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/mongodb
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: auth-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/apps/auth
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: chat-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/apps/chat
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: storage-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/apps/storage
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: news-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/apps/news
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: notification-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/apps/notification
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: socket-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/apps/socket
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: up-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/apps/up
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/apps/demo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: elastic-search
+#  namespace: argocd
+#spec:
+#  project: default
+#  source:
+#    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+#    targetRevision: HEAD
+#    path: kubernetes/elasticsearch
+#  destination:
+#    server: https://kubernetes.default.svc
+#    namespace: default
+#  
+#  syncPolicy:
+#    automated:
+#      selfHeal: true
+#      prune: true

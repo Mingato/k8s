@@ -1,0 +1,145 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata: 
+  name: applications-ingressgateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: PASSTHROUGH
+        #tls:
+      #  mode: SIMPLE # enables HTTPS on this port
+      #  credentialName: "httpbin-credential"
+      hosts:
+        - "*"
+---
+  
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata: 
+  name: app-virtual-services
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - applications-ingressgateway
+  http:
+    - match:
+      - uri:
+          prefix: /auth/
+      route:
+      - destination:
+          host: auth-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /auth/
+
+    - match:
+      - uri:
+          prefix: /chat/
+      route:
+      - destination:
+          host: chat-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /chat/
+
+    - match:
+      - uri:
+          prefix: /news/
+      route:
+      - destination:
+          host: news-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /news/
+    
+    - match:
+      - uri:
+          prefix: /storage/
+      route:
+      - destination:
+          host: storage-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
+          prefix: /notification/
+      route:
+      - destination:
+          host: notification-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
+          prefix: /socket/
+      route:
+      - destination:
+          host: socket-service #label
+          #subset: v1
+          port:
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
+          prefix: /up/
+      route:
+      - destination:
+          host: up-service #label
+          #subset: v1
+          port:
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+
+    - match:
+      - uri:
+          prefix: /demo/
+      route:
+      - destination:
+          host: demo-service #label
+          port:
+            number: 8080
+      rewrite:
+        uri: /demo/
+
+    - match:
+      - uri:
+          prefix: /login
+      redirect:
+        uri: /auth/pages/login.html
