@@ -23,6 +23,25 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: configs
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/configs
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: gateway
   namespace: argocd
 spec:
@@ -83,6 +102,46 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: postgres
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/postgres
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pgadmin
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/pgadmin
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: auth-service
   namespace: argocd
 spec:
@@ -90,7 +149,7 @@ spec:
   source:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
-    path: kubernetes/apps/auth
+    path: kubernetes/apps/auth-service
   destination:
     server: https://kubernetes.default.svc
     namespace: default
@@ -110,7 +169,7 @@ spec:
   source:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
-    path: kubernetes/apps/chat
+    path: kubernetes/apps/chat-service
   destination:
     server: https://kubernetes.default.svc
     namespace: default
@@ -130,7 +189,27 @@ spec:
   source:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
-    path: kubernetes/apps/storage
+    path: kubernetes/apps/storage-service
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: volumes
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/volumes
   destination:
     server: https://kubernetes.default.svc
     namespace: default
@@ -150,7 +229,7 @@ spec:
   source:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
-    path: kubernetes/apps/news
+    path: kubernetes/apps/news-service
   destination:
     server: https://kubernetes.default.svc
     namespace: default
@@ -170,7 +249,7 @@ spec:
   source:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
-    path: kubernetes/apps/notification
+    path: kubernetes/apps/notification-service
   destination:
     server: https://kubernetes.default.svc
     namespace: default
@@ -190,7 +269,7 @@ spec:
   source:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
-    path: kubernetes/apps/socket
+    path: kubernetes/apps/socket-service
   destination:
     server: https://kubernetes.default.svc
     namespace: default
@@ -210,7 +289,7 @@ spec:
   source:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
-    path: kubernetes/apps/up
+    path: kubernetes/apps/up-service
   destination:
     server: https://kubernetes.default.svc
     namespace: default

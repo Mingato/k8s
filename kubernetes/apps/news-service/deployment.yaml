@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news-service
+spec:
+  selector:
+    matchLabels:
+      app: news-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  template:
+    metadata:
+      name: news-service
+      labels:
+        app: news-service
+        version: v1
+    spec:
+      containers:
+      - name: news-service
+        image: wm3/news-service:0.0.7
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: config
+        env:
+        - name: FOUNDATION_DATABASE_URL
+          value: jdbc:postgresql://postgres:5432/wm3?createDatabaseIfNotExist=true&useSSL=false
+        - name: FOUNDATION_DATABASE_USERNAME
+          value: admin
+        - name: FOUNDATION_DATABASE_PASSWORD
+          value: red321Company
+        - name: MONGODB_APP_URI
+          value: mongodb://admin:red321Company@mongo:27017/auth?authSource=admin&readPreference=primary
+        - name: PUSH_NOTIFICATION_URL
+          value: notification-service
+        - name: SOCKET_URL
+          value: socket-service
+        resources:
+          limits:
+            cpu: 100m
+            memory: 400Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: news-service
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: news-service
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 180

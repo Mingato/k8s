@@ -1,0 +1,25 @@
+version: '3.2'
+
+volumes:
+    transmission-config:
+        external: true
+        name: transmission-config
+
+services:
+    storage:
+        build:
+            dockerfile: ./storage.Dockerfile
+            context: ./docker-apps/
+        image: wm3/storage-service
+        container_name: storage-service
+        volumes:
+            - transmission-config:/config
+            - /home/administrador/minikube/src/:/data
+        #- dbdata:/data
+        ports:
+        - "8090:8080"
+        environment:
+            DOMAIN: "wm3.redcompaby.com.br"
+            LOCAL_PATH: "/"
+            STORE_IN_AWS: "false"
+

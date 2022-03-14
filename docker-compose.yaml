@@ -26,6 +26,8 @@ services:
         build:
             dockerfile: ./auth.Dockerfile
             context: ./docker-apps/
+            args:
+                VERSION: 123
         image: wm3/auth-service
         container_name: auth-service
     

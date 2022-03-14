@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      name: postgres
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:14.2
+        imagePullPolicy: "IfNotPresent"
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+        - name: nfs-storage
+          mountPath: /postgres/db
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+          limits:
+            cpu: 200m
+            memory: 400Mi
+        env:
+        - name: POSTGRES_DB
+          value: "wm3"
+        - name: POSTGRES_USER
+          value: "admin"
+        - name: POSTGRES_PASSWORD
+          value: "red321Company"
+      volumes:
+      - name: nfs-storage
+        persistentVolumeClaim:
+          claimName: nfs-storage-pvc

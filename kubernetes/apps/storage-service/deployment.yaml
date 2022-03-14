@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-service
+  labels:
+    app: storage-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storage-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  template:
+    metadata:
+      name: storage-service
+      labels:
+        app: storage-service
+        version: '0.1'
+    spec:
+      containers:
+      - name: storage-service
+        image: wm3/storage-service:0.0.2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: nfs-storage
+          mountPath: /storage
+        env:
+        - name: DOMAIN
+          value: wm3.redcompaby.com.br
+        - name: LOCAL_PATH
+          value: storage
+        - name: STORE_IN_AWS
+          value: 'false'
+        resources:
+          limits:
+            cpu: 100m
+            memory: 300Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 30
+          timeoutSeconds: 60
+          failureThreshold: 8
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 240
+          periodSeconds: 60
+          timeoutSeconds: 60
+          failureThreshold: 8
+      volumes:
+      - name: nfs-storage
+        persistentVolumeClaim:
+          claimName: nfs-storage-pvc

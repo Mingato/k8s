@@ -22,15 +22,15 @@ spec:
         ports:
           - containerPort: 27017
         volumeMounts:
-        - name: mongo-volume
+        - name: nfs-storage
           mountPath: /mongo/db
         resources:
-          limits:
-            cpu: 200m
-            memory: 400Mi
           requests:
             cpu: 100m
             memory: 50Mi
+          limits:
+            cpu: 200m
+            memory: 400Mi
         env:
         - name: AUTH
           value: "yes"
@@ -39,10 +39,9 @@ spec:
         - name: MONGO_INITDB_ROOT_PASSWORD
           value: "red321Company"
       volumes:
-      - name: mongo-volume
-        hostPath:
-          path: /C/data/db
-          type: DirectoryOrCreate
+      - name: nfs-storage
+        persistentVolumeClaim:
+          claimName: nfs-storage-pvc
 ---
 apiVersion: v1
 kind: Service
