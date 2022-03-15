@@ -1,0 +1,239 @@
+Instalar docker e kubectl
+sudo swapoff -a
+
+
+sudo curl -fsSL https://get.docker.com | bash
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+echo “deb http://apt.kubernetes.io/ kubernetes-xenial main” > /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install kubelet kubectl kubeadm -y
+
+
+
+Instalar k8s
+https://phoenixnap.com/kb/install-kubernetes-on-ubuntu
+https://stackoverflow.com/questions/70229371/kubelet-service-is-not-running-it-seems-like-the-kubelet-isnt-running-or-healt
+
+sudo hostnamectl set-hostname master-node
+sudo hostnamectl set-hostname worker01
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+or 
+sudo kubeadm init  -apiserver-advertise-address $(hostname -i) --pod-network-cidr=10.244.0.0/16
+
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+
+
+
+instalar minikube ao invés de k8s
+
+if cluster has less than 32GB of RAM, install the minikube
+
+mkdir $HOME/minikube/src/data
+minikube start --memory=16096 --mount --mount-string $HOME/minikube/src/data:/data
+minikube -p minikube docker-env
+eval $(minikube -p minikube docker-env)
+sudo ufw allow 30000:60000/tcp
+sudo apt update
+sudo apt install daemon
+daemon minikube mount $HOME/minikube/src/data:/data
+
+
+
+
+
+
+
+Instalar istio
+https://istio.io/latest/docs/setup/getting-started/
+https://www.how2shout.com/linux/how-to-install-brew-ubuntu-20-04-lts-linux/
+
+https://istio.io/latest/docs/setup/getting-started/#download
+curl -L https://istio.io/downloadIstio | sh -  or curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.11.3 TARGET_ARCH=x86_64 sh -
+
+
+cd istio-1.11.3
+export PATH=$PWD/bin:$PATH
+istioctl install
+if get error so use the command
+istioctl manifest apply --set profile=demo
+or
+istioctl install --set profile=default -y
+
+Injetar sidecar proxies
+kubectl label namespace default istio-injection=enabled
+kubectl get ns default --show-labels
+minikube addons enable ingress
+kubectl create namespace nginx
+
+unninstall
+istioctl x uninstall --purge
+
+
+instalar o argocd
+
+
+https://argo-cd.readthedocs.io/en/stable/getting_started/#1-install-argo-cd
+https://www.youtube.com/watch?v=xYCX2EejSMc
+
+kubectl create namespace argocd
+cd .../kubernetes/argocd
+kubectl apply -n argocd -f instalation
+kubectl apply -f apps
+https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+
+kubectl port-forward --address=0.0.0.0 svc/argocd-server -n argocd 8080:443 //TROCAR port-forward por expose
+pegar senha do argo
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+change service type
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer", "externalIPs":["192.168.100.236"]}}'
+
+expor uma pod
+kubectl expose pod deployment/argocd-server -n argocd --type LoadBalancer --port 8080 --external-ip=192.168.100.236
+
+instalar no windows 
+https://github.com/argoproj/argo-cd/releases/download/v2.1.5/argocd-windows-amd64.exe
+
+
+
+Servidor NFS
+https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-20-04-pt
+https://www.youtube.com/watch?v=to14wmNmRCI
+
+Instalação 
+
+
+sudo apt update
+sudo apt install nfs-kernel-server
+sudo mkdir /var/nfs/k8s -p
+sudo chmod -R 777 /var/nfs
+chmod -R 0777 /folder #permitions to all users
+definindo credenciais 
+sudo chown nobody:nogroup /var/nfs/k8s
+systemctl enable nfs-server
+systemctl start nfs-server
+sudo systemctl status nfs-server
+
+sudo nano /etc/exports
+adicionar linha para liberar acesso de todos os domínios
+/var/nfs/k8s 	 *(rw,sync,no_subtree_check,insecure,no_root_squash)
+sudo exportfs -rav
+sudo exportfs -v
+showmount -e
+
+sudo systemctl restart nfs-kernel-server
+get nfs server port
+rpcinfo -p | grep nfs
+sudo ufw allow 2049/tcp
+
+
+
+
+start applications
+
+git clone https://git.webmodule.com.br/scm/wmser/docker.git
+cd docker
+docker-compose build
+
+eval $(minikube -p minikube docker-env)
+docker build ./apps/chat-service -t wm3/chat-service:0.0.7 --build-arg VERSION=0.0.7 --build-arg URL_REPOSITORY="http://192.168.100.12:8081"
+docker build ./apps/chat-service -t wm3/chat-service:0.0.7 --build-arg VERSION=0.0.7 --build-arg URL_REPOSITORY="http://192.168.100.12:8081"
+docker build ./apps/news-service -t wm3/news-service:0.0.7 --build-arg VERSION=0.0.7 --build-arg URL_REPOSITORY="http://192.168.100.12:8081"
+kubectl patch svc istio-ingressgateway -n istio-system -p '{"spec": {"type": "NodePort"}}'
+kubectl port-forward svc/istio-ingressgateway  --address=0.0.0.0 -n istio-system 8081:80 //TROCAR port-forward por expose
+
+Postgres
+kubectl port-forward svc/postgres --address=0.0.0.0 5432:5432
+kubectl port-forward service/pgadmin --address=0.0.0.0 8081:80
+
+---------------------------------------------------------------------------
+
+se o minikube não encontrar as imagens
+Set the environment variables with eval $(minikube docker-env)
+Build the image with the Docker daemon of Minikube (eg docker build -t my-image .)
+Set the image in the pod spec like the build tag (eg my-image)
+Set the imagePullPolicy to Never, otherwise Kubernetes will try to download the image.
+Important note: You have to run eval $(minikube docker-env) on each terminal you want to use, since it only sets the environment variables for the current shell session.
+
+
+
+se o ubuntu der erro de firewall, então liberar as portas
+sudo ufw allow 8080:8100/tcp
+sudo ufw allow 30000:60000/tcp
+
+acessar serviços em outro namespace
+<service>.<namespace>.svc.cluster.local
+
+acessar um container
+kubectl exec -it storage-service-f6f874c6f-r8jkv -- /bin/sh
+
+erro ao executar o docker compose
+https://stackoverflow.com/questions/64662372/docker-compose-up-error-while-fetching-server-api-version-connection-aborte
+
+
+sudo gpasswd -a $USER docker 
+newgrp docker
+sudo su $USER
+
+
+
+
+
+
+
+
+
+
+
+
+Helm Charts
+https://www.youtube.com/c/wenkatn-justmeandopensource/search?query=helm
+
+installation
+brew install helm
+
+
+Configuring helm in k8s
+https://www.youtube.com/watch?v=dfQIzPUW8mQ
+https://www.youtube.com/watch?v=3GPpm2nZb2s
+https://www.youtube.com/watch?v=hSk_r-CCvLE
+https://www.youtube.com/watch?v=kke9ztMcC7g
+
+kubectl -n kube-system create serviceaccount tilter
+kubectl create clusterrolebinding tilter -- clusterrole cluster-admin --serviceaccount=kube-system:tilter
+helm init --serviceaccount tilter --output yaml > /tmp/helm.yaml
+change/add
+apiVersion: apps/v1
+epec:
+	selector:
+	machlabels:
+app: helm
+name: tilter
+kubectl create -f /tmp/helm.yaml
+helm list
+helm repo update
+
+helm search repo phpmyadmin
+helm repo update
+helm install phpmyadmin stable/phpmyadmin 
+
+Upgrade versions
+helm install <chartname>
+helm upgrade <chartname>
+helm rollback <chartname>
+
+
+
+
+
+
+
+
