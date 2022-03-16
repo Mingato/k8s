@@ -24,6 +24,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: configs
+  namespace: argocd
 spec:
   project: default
   source:
@@ -50,6 +51,26 @@ spec:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
     path: kubernetes/gateway
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/nginx
   destination:
     server: https://kubernetes.default.svc
     namespace: default
@@ -290,26 +311,6 @@ spec:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
     path: kubernetes/apps/up-service
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: default
-  
-  syncPolicy:
-    automated:
-      selfHeal: true
-      prune: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: demo-service
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
-    targetRevision: HEAD
-    path: kubernetes/apps/demo
   destination:
     server: https://kubernetes.default.svc
     namespace: default

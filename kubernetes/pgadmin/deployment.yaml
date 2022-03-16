@@ -37,10 +37,18 @@ spec:
         volumeMounts:
           - name: nfs-storage
             mountPath: /var/lib/pgadmin
+            subPath: pgadmin
           - name: pgadmin-config
             mountPath: /pgadmin4/servers.json
             subPath: servers.json
             readOnly: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
       volumes:
       - name: nfs-storage
         persistentVolumeClaim:

@@ -1,0 +1,436 @@
+CREATE UNIQUE INDEX cfa_emitente##pk_cfa_emitente ON cfa_emitente (cfa_tp_cliente, nome_abrev)
+go
+CREATE UNIQUE INDEX cfa_item##pk_cfa_item ON cfa_item (cfa_tp_item, it_codigo)
+go
+CREATE UNIQUE INDEX cfa_param_campos##ch_seq ON cfa_param_campos (cfa_origem, cfa_seq)
+go
+CREATE UNIQUE INDEX cfa_param_campos##pk_cfa_param_campos ON cfa_param_campos (cfa_origem, cfa_campo)
+go
+CREATE UNIQUE INDEX cfa_regra##pk_cfa_regra ON cfa_regra (cfa_regra)
+go
+CREATE UNIQUE INDEX cfa_regra_item##pk_cfa_regra_item ON cfa_regra_item (cfa_regra, cfa_seq)
+go
+CREATE UNIQUE INDEX cfa_tp_cliente##cfa_tp_cliente ON cfa_tp_cliente (cfa_tp_cliente)
+go
+CREATE UNIQUE INDEX cfa_tp_item##pk_cfa_tp_item ON cfa_tp_item (cfa_tp_item)
+go
+CREATE UNIQUE INDEX rwe_div_cond_pag##pk_div_cond_pag ON rwe_div_cond_pag (cod_divisao, cod_cond_pag)
+go
+CREATE UNIQUE INDEX rwe_div_fam_com##pk_div_fam_com ON rwe_div_fam_com (cod_divisao, fm_cod_com)
+go
+CREATE UNIQUE INDEX rwe_div_flux_aprov_det##pk_rwe_div_flux_aprov_det ON rwe_div_flux_aprov_det (seq, per_desc_min, per_desc_max)
+go
+CREATE INDEX rwe_div_fluxo_aprov##ch_aprova ON rwe_div_fluxo_aprov (cod_divisao, tp_pedido, cod_cond_pag, tp_frete, cod_rep, per_desc_min, per_desc_max)
+go
+CREATE UNIQUE INDEX rwe_div_fluxo_aprov##pk_rwe_div_fluxo_aprov ON rwe_div_fluxo_aprov (seq)
+go
+CREATE UNIQUE INDEX rwe_divisao##pk_divisao ON rwe_divisao (cod_divisao)
+go
+CREATE UNIQUE INDEX rwe_docto_cadastro##pku_docto_cadastro ON rwe_docto_cadastro (cod_docto)
+go
+CREATE UNIQUE INDEX rwe_familia##pku_rwe_familia ON rwe_familia (fm_cod_com, fm_codigo)
+go
+CREATE UNIQUE INDEX rwe_grp_doc_cad##pku_grp_doc_cad ON rwe_grp_doc_cad (cod_grp)
+go
+CREATE UNIQUE INDEX rwe_grp_doc_cad_item##pku_grp_doc_item ON rwe_grp_doc_cad_item (cod_grp, cod_docto)
+go
+CREATE UNIQUE INDEX rwe_item##pku_rwe_item ON rwe_item (it_codigo)
+go
+CREATE INDEX rwe_log_det_pre_emit##pku_log_det_pre_emit ON rwe_log_det_pre_emit (nr_trans)
+go
+CREATE INDEX rwe_log_pre_emit##i_log_pre_emit ON rwe_log_pre_emit (cod_pre_emit, time_transacao)
+go
+CREATE INDEX rwe_log_pre_emit##pku_log_pre_emit ON rwe_log_pre_emit (nr_trans)
+go
+CREATE INDEX rwe_log_prom_item##pk_log_prom_item ON rwe_log_prom_item (nome_abrev, nr_pedcli, nr_sequencia, it_codigo, cod_refer, dt_altera)
+go
+CREATE INDEX rwe_log_prom_ped##pk_log_prom_ed ON rwe_log_prom_ped (nr_pedido, dt_altera)
+go
+CREATE UNIQUE INDEX rwe_param_entr##pk_rwe_param_entr ON rwe_param_entr (fm_codigo)
+go
+CREATE UNIQUE INDEX rwe_ped_item##ch_rwe_ped_item ON rwe_ped_item (nome_abrev, nr_pedcli, nr_sequencia, it_codigo, cod_refer)
+go
+CREATE INDEX rwe_ped_item##ch_ultm_ped ON rwe_ped_item (nome_abrev, it_codigo, nr_pedido)
+go
+CREATE UNIQUE INDEX rwe_ped_venda##pku_rwe_ped_venda ON rwe_ped_venda (nr_pedido)
+go
+CREATE INDEX rwe_pre_emit##i_cgc ON rwe_pre_emit (cgc)
+go
+CREATE INDEX rwe_pre_emit##i_repres ON rwe_pre_emit (cod_rep)
+go
+CREATE UNIQUE INDEX rwe_pre_emit##pku_pre_emit ON rwe_pre_emit (cod_pre_emit)
+go
+CREATE INDEX rwe_pre_emit##u_id_pre_sessao ON rwe_pre_emit (id_pre_sessao)
+go
+CREATE INDEX rwe_pre_emit_2##i_cgc ON rwe_pre_emit_2 (cgc)
+go
+CREATE INDEX rwe_pre_emit_2##i_repres ON rwe_pre_emit_2 (cod_rep)
+go
+CREATE UNIQUE INDEX rwe_pre_emit_2##pku_pre_emit ON rwe_pre_emit_2 (cod_pre_emit)
+go
+CREATE INDEX rwe_pre_emit_2##u_id_pre_sessao ON rwe_pre_emit_2 (id_pre_sessao)
+go
+CREATE UNIQUE INDEX rwe_pre_emit_cli##pku_pre_emit_cli ON rwe_pre_emit_cli (cod_pre_emit, cod_emitente, sequencia)
+go
+CREATE UNIQUE INDEX rwe_pre_emit_cont##pku_pre_emit_cont ON rwe_pre_emit_cont (cod_pre_emit, cod_emitente, sequencia)
+go
+CREATE UNIQUE INDEX rwe_pre_emit_file##pku_pre_emit_file ON rwe_pre_emit_file (cod_pre_emit, cod_emitente, sequencia)
+go
+CREATE UNIQUE INDEX rwe_pre_emit_filial##pku_pre_emit_filial ON rwe_pre_emit_filial (cod_pre_emit, cod_emitente, sequencia)
+go
+CREATE UNIQUE INDEX rwe_pre_emit_forn##pku_pre_emit_forn ON rwe_pre_emit_forn (cod_pre_emit, cod_emitente, sequencia)
+go
+CREATE UNIQUE INDEX rwe_pre_emit_socio##pku_socio ON rwe_pre_emit_socio (cod_emitente, cod_pre_emit, sequencia)
+go
+CREATE UNIQUE INDEX rwe_tp_tabela##pk_tp_tabela ON rwe_tp_tabela (pais, estado, cod_tp_pedido)
+go
+CREATE UNIQUE INDEX rwe_usuario##pku_rwe_usuario ON rwe_usuario (id_usuario)
+go
+CREATE UNIQUE INDEX rwe_usuario_fm##pku_rwe_usuario_fm ON rwe_usuario_fm (id_usuario, fm_cod_com)
+go
+CREATE UNIQUE INDEX rwm_ambiente##pku_ambiente ON rwm_ambiente (cod_ambiente)
+go
+CREATE UNIQUE INDEX rwm_arquivo##i_arquivo ON rwm_arquivo (id_arquivo)
+go
+CREATE UNIQUE INDEX rwm_arquivo##pku_arquivo ON rwm_arquivo (cod_arquivo)
+go
+CREATE UNIQUE INDEX rwm_arquivo_categ##pku_arquivo_categ ON rwm_arquivo_categ (cod_categ)
+go
+CREATE INDEX rwm_arquivo_doc##i_doc_arq ON rwm_arquivo_doc (tipo_doc, chave_doc)
+go
+CREATE UNIQUE INDEX rwm_arquivo_doc##pku_arquivo_doc ON rwm_arquivo_doc (tipo_doc, chave_doc, cod_arquivo)
+go
+CREATE INDEX rwm_arquivo_tipo##i__categoria ON rwm_arquivo_tipo (cod_categ)
+go
+CREATE UNIQUE INDEX rwm_arquivo_tipo##pku_tipo_arquivo ON rwm_arquivo_tipo (cod_tipo)
+go
+CREATE INDEX rwm_avisa_item##pk_avisa_item ON rwm_avisa_item (it_codigo, ativo)
+go
+CREATE INDEX rwm_carrinho##i_dt_implanta ON rwm_carrinho (dt_implantacao)
+go
+CREATE UNIQUE INDEX rwm_carrinho##pku_carrinho ON rwm_carrinho (nr_carrinho)
+go
+CREATE UNIQUE INDEX rwm_carrinho_ped##i_pedido ON rwm_carrinho_ped (nr_pedido)
+go
+CREATE UNIQUE INDEX rwm_carrinho_ped##pku_carrinho_ped ON rwm_carrinho_ped (nr_carrinho, nr_pedido)
+go
+CREATE UNIQUE INDEX rwm_categ_produto##pku_categ_produto ON rwm_categ_produto (cod_categoria, tabela, codigo)
+go
+CREATE UNIQUE INDEX rwm_categoria##idx_categ ON rwm_categoria (cod_categoria)
+go
+CREATE UNIQUE INDEX rwm_cep_log##pku_cep ON rwm_cep_log (cep)
+go
+CREATE UNIQUE INDEX rwm_circulo##pku_circulo ON rwm_circulo (cod_circulo)
+go
+CREATE UNIQUE INDEX rwm_circulo_grp##i_seq_circulo_grp ON rwm_circulo_grp (cod_circulo, seq_pai, seq)
+go
+CREATE UNIQUE INDEX rwm_circulo_grp##i_seq_circulo_grp_o ON rwm_circulo_grp (cod_circulo, seq, seq_pai)
+go
+CREATE UNIQUE INDEX rwm_circulo_grp##i_seq_principal ON rwm_circulo_grp (cod_circulo, seq)
+go
+CREATE UNIQUE INDEX rwm_circulo_grp##pku_circulo_grp ON rwm_circulo_grp (cod_circulo, cod_grp)
+go
+CREATE UNIQUE INDEX rwm_cond_pagto##pku_cond_pagto ON rwm_cond_pagto (id_usuario, cod_cond_pag)
+go
+CREATE UNIQUE INDEX rwm_conta_email##pku_conta_email ON rwm_conta_email (conta)
+go
+CREATE UNIQUE INDEX rwm_container##i_container_seq ON rwm_container (seq_pai, seq)
+go
+CREATE UNIQUE INDEX rwm_container##pku_rwm_container ON rwm_container (cod_container)
+go
+CREATE INDEX rwm_container_circulo##i_circulo_ini_val ON rwm_container_circulo (cod_container, dt_ini_val)
+go
+CREATE UNIQUE INDEX rwm_container_circulo##pku_container_circulo ON rwm_container_circulo (cod_container, cod_circulo)
+go
+CREATE UNIQUE INDEX rwm_container_grp##pku_container_grp ON rwm_container_grp (cod_container, cod_grp)
+go
+CREATE UNIQUE INDEX rwm_emitente##pkuc_cod_emitente ON rwm_emitente (cod_emitente)
+go
+CREATE INDEX rwm_emitente_usuar##i_grp ON rwm_emitente_usuar (cod_grp, tp_relacao)
+go
+CREATE INDEX rwm_emitente_usuar##i_usuario ON rwm_emitente_usuar (id_usuario, tp_relacao)
+go
+CREATE UNIQUE INDEX rwm_emitente_usuar##pku_relacao_usuar ON rwm_emitente_usuar (cod_emitente, tp_relacao, id_usuario, cod_grp)
+go
+CREATE UNIQUE INDEX rwm_est_acesso##pku_est_acesso ON rwm_est_acesso (id_usuario_pai, id_usuario)
+go
+CREATE UNIQUE INDEX rwm_estrut_menu_categ##idx_estrut_categ ON rwm_estrut_menu_categ (tipo_segmento, seq)
+go
+CREATE UNIQUE INDEX rwm_estrut_menu_fab##pku_menu_fab ON rwm_estrut_menu_fab (tipo_segmento, cod_fab, seq, seq_pai)
+go
+CREATE UNIQUE INDEX rwm_estrut_menu_faq##idx_faq01 ON rwm_estrut_menu_faq (seq, seq_pai)
+go
+CREATE UNIQUE INDEX rwm_fabricante##pku_fabricante ON rwm_fabricante (cod_fab)
+go
+CREATE UNIQUE INDEX rwm_fale_depto##pku_depto ON rwm_fale_depto (cod_depto)
+go
+CREATE UNIQUE INDEX rwm_fale_tema##pku_tema ON rwm_fale_tema (cod_tema)
+go
+CREATE UNIQUE INDEX rwm_file##pku_file ON rwm_file (cod_file)
+go
+CREATE UNIQUE INDEX rwm_file_categ##pku_file_categ ON rwm_file_categ (cod_categ)
+go
+CREATE UNIQUE INDEX rwm_grp##pku_grp ON rwm_grp (cod_grp)
+go
+CREATE UNIQUE INDEX rwm_grp_config##pku_grp_config ON rwm_grp_config (cod_grp_config)
+go
+CREATE INDEX rwm_grp_config_ord##i_grp_config ON rwm_grp_config_ord (cod_grp_config, ord_grp_config)
+go
+CREATE UNIQUE INDEX rwm_grp_objeto##pku_grp_objeto ON rwm_grp_objeto (cod_grp, cod_container, cod_obj)
+go
+CREATE UNIQUE INDEX rwm_grp_programa##pku_grp_programa ON rwm_grp_programa (cod_grp, cod_programa)
+go
+CREATE UNIQUE INDEX rwm_grp_rel##pku_rwm_grp_rel ON rwm_grp_rel (cod_circulo, cod_grp, cod_grp_rel)
+go
+CREATE UNIQUE INDEX rwm_grp_seg##pku_grp_seg ON rwm_grp_seg (cod_grp)
+go
+CREATE UNIQUE INDEX rwm_grp_seg_usr##pku_grp_seg_usr ON rwm_grp_seg_usr (cod_grp, id_usuario)
+go
+CREATE UNIQUE INDEX rwm_grp_usr##pku_grp_usr ON rwm_grp_usr (cod_grp, id_usuario)
+go
+CREATE INDEX rwm_hist_acesso##pk_hist_acesso ON rwm_hist_acesso (id, dt_trans, hr_trans)
+go
+CREATE UNIQUE INDEX rwm_hist_descto_ped_item##ch_descto_peditem ON rwm_hist_descto_ped_item (nome_abrev, nr_pedcli, nr_sequencia, it_codigo, cod_refer, tipo_descto)
+go
+CREATE INDEX rwm_hist_env_email##ch_envio ON rwm_hist_env_email (dt_envio)
+go
+CREATE INDEX rwm_hist_env_email##u_tempo ON rwm_hist_env_email (dt_trans, hr_trans)
+go
+CREATE INDEX rwm_hist_fale_con##u_tempo ON rwm_hist_fale_con (dt_trans, hr_trans)
+go
+CREATE UNIQUE INDEX rwm_hist_login##pku_hist_login ON rwm_hist_login (id)
+go
+CREATE INDEX rwm_hist_login##u_usuario ON rwm_hist_login (id_usuario, dt_login, hr_login)
+go
+CREATE INDEX rwm_item##i_qt_vendida ON rwm_item (qt_vendida)
+go
+CREATE UNIQUE INDEX rwm_item##pku_item ON rwm_item (it_codigo)
+go
+CREATE UNIQUE INDEX rwm_item_imagem##pku_item_imagem ON rwm_item_imagem (it_codigo, sequencia)
+go
+CREATE UNIQUE INDEX rwm_item_video##pku_item_videao ON rwm_item_video (it_codigo, sequencia)
+go
+CREATE INDEX rwm_log_det_emitente##pk_log_det_emitente ON rwm_log_det_emitente (nr_trans)
+go
+CREATE INDEX rwm_log_det_natur_oper##pk_log_det_natur_oper ON rwm_log_det_natur_oper (nr_trans)
+go
+CREATE INDEX rwm_log_det_ped_venda##pku_log_det_ped_venda ON rwm_log_det_ped_venda (nr_trans)
+go
+CREATE UNIQUE INDEX rwm_log_emitente##pku_log_emitente ON rwm_log_emitente (nr_trans)
+go
+CREATE INDEX rwm_log_emitente##u_cliente ON rwm_log_emitente (cod_emitente, time_transacao)
+go
+CREATE UNIQUE INDEX rwm_log_natur_oper##pku_log_natur_oper ON rwm_log_natur_oper (nr_trans)
+go
+CREATE INDEX rwm_log_natur_oper##u_cliente ON rwm_log_natur_oper (nat_operacao, time_transacao)
+go
+CREATE UNIQUE INDEX rwm_log_ped_venda##pku_log_ped_venda ON rwm_log_ped_venda (nr_trans)
+go
+CREATE INDEX rwm_log_ped_venda##u_pedido ON rwm_log_ped_venda (nr_pedido, time_transacao)
+go
+CREATE UNIQUE INDEX rwm_menu##pku_menu ON rwm_menu (cod_versao, cod_grp, tp_menu, sequencia)
+go
+CREATE UNIQUE INDEX rwm_menu_categ##idx_perfil ON rwm_menu_categ (tipo_segmento)
+go
+CREATE UNIQUE INDEX rwm_metas##pku_metas ON rwm_metas (cod_metas)
+go
+CREATE UNIQUE INDEX rwm_metas_obj_grp##pku_metas_obj_grp ON rwm_metas_obj_grp (cod_metas, cod_obj_grp)
+go
+CREATE UNIQUE INDEX rwm_metas_obj_val##pku_metas_obj_val ON rwm_metas_obj_val (cod_obj_val, cod_metas)
+go
+CREATE UNIQUE INDEX rwm_mod_est##pku_mod_est ON rwm_mod_est (cod_grp, seq)
+go
+CREATE UNIQUE INDEX rwm_modelo_html##pku_modelo_email ON rwm_modelo_html (sequencia)
+go
+CREATE UNIQUE INDEX rwm_modelo_html##u_modelo ON rwm_modelo_html (modelo)
+go
+CREATE UNIQUE INDEX rwm_modulo##pku_modulo ON rwm_modulo (cod_modulo)
+go
+CREATE INDEX rwm_obj_item_lista##i_sequencia ON rwm_obj_item_lista (cod_objeto_lista, sequencia)
+go
+CREATE INDEX rwm_obj_item_lista##pk_item_lista ON rwm_obj_item_lista (cod_objeto_lista, texto_label)
+go
+CREATE UNIQUE INDEX rwm_obj_item_lista##pku_obj_item_lista ON rwm_obj_item_lista (cod_objeto_lista, texto_value)
+go
+CREATE UNIQUE INDEX rwm_obj_lista##pku_objeto ON rwm_obj_lista (cod_objeto_lista)
+go
+CREATE UNIQUE INDEX rwm_objeto##pku_rwm_objeto ON rwm_objeto (cod_container, cod_obj, cod_grp, id_usuario, cod_container_ref, cod_obj_ref, tp_behavior)
+go
+CREATE UNIQUE INDEX rwm_objeto_cached##pku_rwm_objeto_cache ON rwm_objeto_cached (cod_container, cod_obj, cod_grp, id_usuario, cod_container_ref, cod_obj_ref, tp_behavior)
+go
+CREATE UNIQUE INDEX rwm_objeto_longchar##pku_rwm_objeto_long ON rwm_objeto_longchar (cod_container, cod_obj, cod_grp, id_usuario, cod_container_ref, cod_obj_ref, tp_behavior, seq)
+go
+CREATE UNIQUE INDEX rwm_objeto_perm##pku_rwm_objeto_perm ON rwm_objeto_perm (cod_container, cod_obj, cod_grp, id_usuario, cod_container_ref, cod_obj_ref, tp_behavior, tp_permission)
+go
+CREATE UNIQUE INDEX rwm_objeto_rel##pku_rwm_obj_rel ON rwm_objeto_rel (cod_container, cod_obj, cod_grp, id_usuario, cod_container_child, cod_obj_child, cod_rel, seq)
+go
+CREATE UNIQUE INDEX rwm_objeto_replace##pku_rwm_obj_replace ON rwm_objeto_replace (cod_container, cod_obj, cod_grp, id_usuario, cod_container_ref, cod_obj_ref, tp_behavior, seq)
+go
+CREATE INDEX rwm_papel##i_papel_prioridade ON rwm_papel (prioridade)
+go
+CREATE UNIQUE INDEX rwm_papel##pku_cod_papel ON rwm_papel (cod_papel)
+go
+CREATE UNIQUE INDEX rwm_papel_usr##pku_papel_usuario ON rwm_papel_usr (cod_papel, id_usuario)
+go
+CREATE UNIQUE INDEX rwm_param_cli##pku_param_cli ON rwm_param_cli (id_usuario)
+go
+CREATE INDEX rwm_param_cli##u_cliente ON rwm_param_cli (cod_emitente)
+go
+CREATE UNIQUE INDEX rwm_param_rep##pku_param_rep ON rwm_param_rep (id_usuario)
+go
+CREATE INDEX rwm_param_rep##u_repres ON rwm_param_rep (cod_rep)
+go
+CREATE UNIQUE INDEX rwm_param_sessao##pku_param_sessao ON rwm_param_sessao (cod_processo)
+go
+CREATE UNIQUE INDEX rwm_pca_param_campos##ch_seq ON rwm_pca_param_campos (pca_origem, pca_seq)
+go
+CREATE UNIQUE INDEX rwm_pca_param_campos##pk_rwm_pca_param_campos ON rwm_pca_param_campos (pca_origem, pca_campo)
+go
+CREATE UNIQUE INDEX rwm_pca_regra##pk_rwm_pca_regra ON rwm_pca_regra (pca_cod_escopo, pca_regra)
+go
+CREATE UNIQUE INDEX rwm_pca_regra_item##pk_rwm_pca_regra_item ON rwm_pca_regra_item (pca_cod_escopo, pca_regra, pca_seq)
+go
+CREATE UNIQUE INDEX rwm_ped_item##pku_ped_item ON rwm_ped_item (nome_abrev, nr_pedcli, nr_sequencia, it_codigo, cod_refer)
+go
+CREATE UNIQUE INDEX rwm_ped_item_pca##pku_ped_item_pca ON rwm_ped_item_pca (nome_abrev, nr_pedcli, nr_sequencia, it_codigo, cod_refer, pca_cod_escopo, pca_regra)
+go
+CREATE UNIQUE INDEX rwm_ped_item_var##pku_ped_item_var ON rwm_ped_item_var (nome_abrev, nr_pedcli, nr_sequencia, it_codigo, cod_refer, cod_variavel)
+go
+CREATE UNIQUE INDEX rwm_ped_item_wt##pku_rwm_ped_item_wt ON rwm_ped_item_wt (nome_abrev, nr_pedcli, nr_sequencia, it_codigo, cod_refer)
+go
+CREATE UNIQUE INDEX rwm_ped_item_wt_adc##pku_ped_item_adc ON rwm_ped_item_wt_adc (nome_abrev, nr_pedcli, nr_sequencia, it_codigo, cod_refer, cod_natur_operac, idi_tip_dado, num_seq)
+go
+CREATE UNIQUE INDEX rwm_ped_item_wt_imp##pku_ped_item_imp ON rwm_ped_item_wt_imp (nome_abrev, nr_pedcli, nr_sequencia, it_codigo, cod_refer)
+go
+CREATE INDEX rwm_ped_venda##i_dt_implant ON rwm_ped_venda (dt_implant, cod_emitente)
+go
+CREATE INDEX rwm_ped_venda##i_pedido_inf ON rwm_ped_venda (nome_abrev_cli, nr_pedcli_inf)
+go
+CREATE INDEX rwm_ped_venda##i_prospect ON rwm_ped_venda (cod_pre_emit, nr_pedcli, dt_implant)
+go
+CREATE UNIQUE INDEX rwm_ped_venda##pku_ped_venda ON rwm_ped_venda (nr_pedido)
+go
+CREATE UNIQUE INDEX rwm_ped_venda_pca##pku_ped_venda_pca ON rwm_ped_venda_pca (nr_pedido, pca_cod_escopo, pca_regra)
+go
+CREATE UNIQUE INDEX rwm_ped_venda_var##pku_ped_venda_var ON rwm_ped_venda_var (nr_pedido, cod_variavel)
+go
+CREATE UNIQUE INDEX rwm_ped_venda_wt##pku_ped_venda_wt ON rwm_ped_venda_wt (nome_abrev, nr_pedcli)
+go
+CREATE UNIQUE INDEX rwm_per_descto_item##pku_descto01 ON rwm_per_descto_item (it_codigo, seq)
+go
+CREATE UNIQUE INDEX rwm_perm_perfil##pku_rwm_erm_perfil ON rwm_perm_perfil (perfil, cod_permissao)
+go
+CREATE UNIQUE INDEX rwm_perm_perfil_opcoes##pku_rwm_perm_perfil_opcoes ON rwm_perm_perfil_opcoes (perfil, cod_permissao, texto_value)
+go
+CREATE UNIQUE INDEX rwm_pool_param##pku_id_pool ON rwm_pool_param (id_pool)
+go
+CREATE UNIQUE INDEX rwm_pool_param##u_uuid ON rwm_pool_param (uuid)
+go
+-- **CREATE UNIQUE INDEX rwm_pool_param_val##pku_pool_param_val ON rwm_pool_param_val (id_pool, context, name)
+-- **-- **go
+CREATE UNIQUE INDEX rwm_pool_param_val_lc##pku_pool_param_val_lc ON rwm_pool_param_val_lc (id_pool, context, name, seq)
+go
+CREATE UNIQUE INDEX rwm_pre_sessao##pku_pre_sessao ON rwm_pre_sessao (id)
+go
+CREATE UNIQUE INDEX rwm_programa##pku_programa ON rwm_programa (cod_programa)
+go
+CREATE UNIQUE INDEX rwm_programa_ref##pku_programa_ref ON rwm_programa_ref (cod_programa, cod_ref)
+go
+CREATE INDEX rwm_req_alt_emitente##i_emitente ON rwm_req_alt_emitente (cod_emitente)
+go
+CREATE UNIQUE INDEX rwm_req_alt_emitente##pku_req_alt_emitente ON rwm_req_alt_emitente (cod_req)
+go
+CREATE INDEX rwm_req_det_alt_emitente##pku_req_det_alt_emitente ON rwm_req_det_alt_emitente (cod_req)
+go
+CREATE UNIQUE INDEX rwm_rot_prog##pku_rot_prog ON rwm_rot_prog (cod_rotina, sequencia)
+go
+CREATE UNIQUE INDEX rwm_rotina##pku_rotina ON rwm_rotina (cod_rotina)
+go
+CREATE UNIQUE INDEX rwm_rpw_param##pku_rwp_param ON rwm_rpw_param (cod_rpw)
+go
+CREATE UNIQUE INDEX rwm_rpw_prog##pku_rwp_prog ON rwm_rpw_prog (cod_rpw, seq)
+go
+CREATE UNIQUE INDEX rwm_sessao##pku_sessao ON rwm_sessao (id)
+go
+CREATE INDEX rwm_sessao##u_usuario ON rwm_sessao (id_usuario)
+go
+CREATE UNIQUE INDEX rwm_sessao_var##pku_rwm_sessao_var ON rwm_sessao_var (id, cod_var)
+go
+CREATE INDEX rwm_solicita_senha##pk_rwm_solicita_senha ON rwm_solicita_senha (dt_solicitacao)
+go
+CREATE UNIQUE INDEX rwm_tabpre##pku_tabpre ON rwm_tabpre (id_usuario, nr_tabpre)
+go
+CREATE UNIQUE INDEX rwm_transporte##pku_transportes ON rwm_transporte (id_usuario, cod_transp)
+go
+CREATE UNIQUE INDEX rwm_usuario##i_email ON rwm_usuario (email)
+go
+CREATE INDEX rwm_usuario##i_perfil ON rwm_usuario (cod_usuario, perfil)
+go
+CREATE UNIQUE INDEX rwm_usuario##pku_usuario ON rwm_usuario (id_usuario)
+go
+CREATE UNIQUE INDEX rwm_usuario_amb##pku_usuario_amb ON rwm_usuario_amb (id_usuario, cod_ambiente)
+go
+CREATE UNIQUE INDEX rwm_usuario_item##pku_usuario_item ON rwm_usuario_item (id_usuario, tabela, codigo)
+go
+CREATE UNIQUE INDEX rwm_usuario_perm##pku_rwm_usuario_perm ON rwm_usuario_perm (id_usuario, perfil, cod_permissao)
+go
+CREATE UNIQUE INDEX rwm_usuario_sec##pku_usuario_sec ON rwm_usuario_sec (id_usuario, cod_usuario_sec, perfil)
+go
+CREATE UNIQUE INDEX rwm_usuario_var##pku_rwm_usuario_var ON rwm_usuario_var (id_usuario, cod_var)
+go
+CREATE UNIQUE INDEX rwm_var_item##pku_var_item ON rwm_var_item (it_codigo, cod_variavel, tp_var, tp_usuario, id_usuario)
+go
+CREATE UNIQUE INDEX rwm_vlr_tp_frete##pku_vlr_tp_frete ON rwm_vlr_tp_frete (uf, cidade)
+go
+CREATE UNIQUE INDEX rwm_web_cond_pagto##pku_cond_pagto ON rwm_web_cond_pagto (cod_cond_pag)
+go
+CREATE UNIQUE INDEX rwm_web_deposito##pku_web_deposito ON rwm_web_deposito (cod_depos)
+go
+CREATE UNIQUE INDEX rwm_web_fam_comerc##pku_web_fam_comerc ON rwm_web_fam_comerc (fm_cod_com)
+go
+CREATE UNIQUE INDEX rwm_web_tabpre##pku_web_tabpre ON rwm_web_tabpre (nr_tabpre)
+go
+CREATE UNIQUE INDEX rwm_web_transporte##pku_web_transporte ON rwm_web_transporte (cod_transp)
+go
+CREATE UNIQUE INDEX rwm_wrk_atividade##pku_atividade ON rwm_wrk_atividade (cod_atividade)
+go
+CREATE UNIQUE INDEX rwm_wrk_documento##pku_tab_docto ON rwm_wrk_documento (tab_docto)
+go
+CREATE UNIQUE INDEX rwm_wrk_eve_proc_ativ##pku_eve_proc_ativ ON rwm_wrk_eve_proc_ativ (cod_procedimento, seq_ativid, seq_eve_proc_ativ)
+go
+CREATE UNIQUE INDEX rwm_wrk_evento_ativ##pku_evento_ativ ON rwm_wrk_evento_ativ (cod_atividade, seq_evento)
+go
+CREATE UNIQUE INDEX rwm_wrk_evento_proc##pku_evento_proc ON rwm_wrk_evento_proc (cod_procedimento, seq_evento)
+go
+CREATE INDEX rwm_wrk_hist_email_anexo##pk_hist_email_anexo ON rwm_wrk_hist_email_anexo (nr_tarefa, seq)
+go
+CREATE UNIQUE INDEX rwm_wrk_hist_email_tarefa##pku_hist_email_tarefa ON rwm_wrk_hist_email_tarefa (nr_tarefa, seq)
+go
+CREATE INDEX rwm_wrk_hist_tarefa##pk_wrk_hist_tarefa ON rwm_wrk_hist_tarefa (nr_tarefa, dt_hist)
+go
+CREATE INDEX rwm_wrk_proc_ativ##i_ordem ON rwm_wrk_proc_ativ (cod_procedimento, ordem)
+go
+CREATE UNIQUE INDEX rwm_wrk_proc_ativ##pku_proc_ativ ON rwm_wrk_proc_ativ (cod_procedimento, seq_ativid)
+go
+CREATE UNIQUE INDEX rwm_wrk_procedimento##pku_processo ON rwm_wrk_procedimento (cod_procedimento)
+go
+CREATE UNIQUE INDEX rwm_wrk_processo##pku_processo ON rwm_wrk_processo (nr_processo)
+go
+CREATE INDEX rwm_wrk_processo##pku_tab_docto ON rwm_wrk_processo (tab_docto, chave_docto, cod_procedimento)
+go
+CREATE INDEX rwm_wrk_tarefa##i_aberta ON rwm_wrk_tarefa (aberta, tp_usuario, cod_usuario, cod_situacao, dt_inicio)
+go
+CREATE INDEX rwm_wrk_tarefa##i_ordem ON rwm_wrk_tarefa (ordem)
+go
+CREATE INDEX rwm_wrk_tarefa##i_processo ON rwm_wrk_tarefa (nr_processo, nr_tarefa, seq_ativid)
+go
+CREATE INDEX rwm_wrk_tarefa##i_resp ON rwm_wrk_tarefa (tp_usuario, cod_usuario, cod_situacao, dt_inicio)
+go
+CREATE UNIQUE INDEX rwm_wrk_tarefa##pku_tarefa ON rwm_wrk_tarefa (nr_tarefa)
+go
+CREATE INDEX rwm_wrk_temp_eve_ativ##pku_temp_eve_ativ ON rwm_wrk_temp_eve_ativ (nr_tarefa, cod_procedimento, seq_ativid, seq_eve_proc_ativ)
+go
+CREATE INDEX rwm_wrk_temp_eve_proc##pk_temp_eve_proc ON rwm_wrk_temp_eve_proc (nr_processo, cod_procedimento, seq_evento)
+go
+CREATE UNIQUE INDEX rwm_wrk_usuario##pku_wrk_usuario ON rwm_wrk_usuario (id_usuario)
+go

@@ -38,23 +38,36 @@ spec:
   http:
     - match:
       - uri:
+          prefix: /nginx/
+      route:
+      - destination:
+          host: nginx.nginx.svc.cluster.local
+          #subset: v1
+          port:
+            number: 80
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+
+    - match:
+      - uri:
           prefix: /auth/
       route:
       - destination:
-          host: auth-service #label
+          host: auth-service.default.svc.cluster.local
           #subset: v1
           port: 
             number: 8080
         #weight: 100 # porcentagem de requests que virão para este destino
       rewrite:
-        uri: /auth/
+        uri: /
 
     - match:
       - uri:
           prefix: /chat/
       route:
       - destination:
-          host: chat-service #label
+          host: chat-service.default.svc.cluster.local
           #subset: v1
           port: 
             number: 8080
@@ -67,7 +80,7 @@ spec:
           prefix: /news/
       route:
       - destination:
-          host: news-service #label
+          host: news-service.default.svc.cluster.local
           #subset: v1
           port: 
             number: 8080
@@ -80,7 +93,7 @@ spec:
           prefix: /storage/
       route:
       - destination:
-          host: storage-service #label
+          host: storage-service.default.svc.cluster.local
           #subset: v1
           port: 
             number: 8080
@@ -93,7 +106,7 @@ spec:
           prefix: /notification/
       route:
       - destination:
-          host: notification-service #label
+          host: notification-service.default.svc.cluster.local
           #subset: v1
           port: 
             number: 8080
@@ -106,7 +119,7 @@ spec:
           prefix: /socket/
       route:
       - destination:
-          host: socket-service #label
+          host: socket-service.default.svc.cluster.local
           #subset: v1
           port:
             number: 8080
@@ -119,7 +132,7 @@ spec:
           prefix: /up/
       route:
       - destination:
-          host: up-service #label
+          host: up-service.default.svc.cluster.local
           #subset: v1
           port:
             number: 8080
@@ -132,11 +145,23 @@ spec:
           prefix: /demo/
       route:
       - destination:
-          host: demo-service #label
+          host: demo-service.default.svc.cluster.local
           port:
             number: 8080
       rewrite:
         uri: /demo/
+
+    - match:
+      - uri:
+          prefix: /pgadmin/
+      route:
+      - destination:
+          host: pgadmin.default.svc.cluster.local
+          port:
+            number: 80
+      rewrite:
+        uri: /
+
 
     - match:
       - uri:

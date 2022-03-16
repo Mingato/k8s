@@ -28,4 +28,5 @@
 #        notRequestPrincipals: ["*"]
 #    to:
 #    - operation:
-#        paths: ["/demo/*","/storage/files/images/*","/storage/**"]
+#         methods: ["GET"]
+#         paths: ["/demo/*","/storage/files/pub/**"]

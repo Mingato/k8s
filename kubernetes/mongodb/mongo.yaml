@@ -5,7 +5,6 @@ metadata:
   labels:
     app: mongo
 spec:
-  #serviceName: "mongo"
   replicas: 1
   selector:
     matchLabels:
@@ -23,13 +22,15 @@ spec:
           - containerPort: 27017
         volumeMounts:
         - name: nfs-storage
-          mountPath: /mongo/db
+          mountPath: /data/db
+          subPath: mongodb
+          readOnly: false
         resources:
           requests:
             cpu: 100m
             memory: 50Mi
           limits:
-            cpu: 200m
+            cpu: 600m
             memory: 400Mi
         env:
         - name: AUTH
