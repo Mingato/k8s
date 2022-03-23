@@ -26,6 +26,10 @@ listPrimaryKeyNames = {
     "rwm_circulo": [
         "cod_circulo"
     ],
+    "rwm_grp_usr": [
+        "cod_grp",
+        "id_usuario"
+    ],
     "rwm_grp_rel": [
         "cod_circulo",
         "cod_grp",
@@ -38,8 +42,26 @@ listPrimaryKeyNames = {
         "seq",
         "seq_pai"
     ],
-    "TestsJson": [
-        "data"
+    "rwm_usuario_rel": [
+        "cod_circulo", 
+        "id_usuario",
+        "id_usuario_rel"
+    ],
+    "rwm_objeto_perm": [
+        "cod_obj",
+        "cod_grp",
+        "cod_container",
+        "id_usuario",
+        "cod_container_ref",
+        "cod_obj_ref"
+    ],
+    "rwm_objeto": [
+        "cod_obj",
+        "cod_grp",
+        "cod_container",
+        "id_usuario",
+        "cod_container_ref",
+        "cod_obj_ref"
     ]
 }
 

@@ -25,9 +25,11 @@ spec:
         imagePullPolicy: IfNotPresent #TODO: Always
         ports:
           - containerPort: 8080
-        env:
-          - name: "MONGODB_URI_PRIMARY"
-            value: ""
+        envFrom:
+        - configMapRef:
+            name: general-configs
+        - configMapRef:
+            name: mongodb-configs
         resources:
           limits:
             cpu: 100m

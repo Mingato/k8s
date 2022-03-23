@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx
-  namespace: nginx
 spec:
   replicas: 1
   selector:
@@ -25,18 +24,20 @@ spec:
         image: nginx:alpine
         ports:
           - containerPort: 80
+          - containerPort: 443
         volumeMounts:
         - name: nfs-nginx
-          mountPath: /etc/nginx/nginx.conf
-          subPath: nginx/nginx.conf
+          mountPath: /etc/nginx
+          subPath: nginx
         resources:
           requests:
             cpu: 100m
-            memory: 50Mi
+            memory: 200Mi
           limits:
             cpu: 400m
-            memory: 400Mi
+            memory: 600Mi
+      dnsPolicy: ClusterFirst
       volumes:
       - name: nfs-nginx
         persistentVolumeClaim:
-          claimName: nfs-nginx-pvc
+          claimName: nfs-storage-pvc

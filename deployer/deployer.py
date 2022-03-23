@@ -40,10 +40,9 @@ def createDockerImage(aplicationName, version):
     args=parser.parse_args()
 
     imageName = 'wm3/' +aplicationName+":"+version
-
-    command = 'docker build ./apps/' + aplicationName + ' -t ' + imageName + ' --build-arg VERSION=' + version + ' --build-arg URL_REPOSITORY="' + args.urlRepository + '"'
+    command = "eval $(minikube docker-env) && "
+    command += 'docker build ./apps/' + aplicationName + ' -t ' + imageName + ' --build-arg VERSION=' + version + ' --build-arg URL_REPOSITORY="' + args.urlRepository + '"'
     print(command)
-    call("eval $(minikube docker-env)", shell=True)
     call(command, shell=True)
     print("\n---------------------------- createDockerImage finished ----------------------------")
 

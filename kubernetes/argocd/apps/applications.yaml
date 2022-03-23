@@ -163,6 +163,26 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: app-configs
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/apps/app-configs
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: auth-service
   namespace: argocd
 spec:

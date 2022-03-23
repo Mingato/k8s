@@ -26,11 +26,13 @@ spec:
         ports:
           - containerPort: 8080
         envFrom:
-          - configMapRef:
-              name: config
+        - configMapRef:
+            name: general-configs
+        - configMapRef:
+            name: mongodb-configs
         env:
-          - name: "MONGODB_URI"
-            value: "mongodb://admin:red321Company@mongo:27017/notification?authSource=admin&readPreference=primary"
+          - name: NOTIFICATION_EXPIRATION_DATE_DAYS
+            value: "15"
         livenessProbe: #verificar o health do container
           httpGet:
             path: /actuator/health # ver qual caminha para verificar se esta saudavel
