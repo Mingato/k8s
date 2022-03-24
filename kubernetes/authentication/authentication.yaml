@@ -1,32 +1,32 @@
-#apiVersion: security.istio.io/v1beta1
-#kind: RequestAuthentication
-#metadata:
-#  name: jwt-authentication
-#  namespace: istio-system
-#spec:
-#  selector:
-#    matchLabels:
-#      istio: ingressgateway
-#  jwtRules:
-#    - issuer: "wm3@redcompany.com.br"
-#      #jwksUri: http://auth-service:8080/.well-known/jwks.json
-#      jwksUri: http://192.168.100.7:8080/.well-known/jwks.json
-#---
-#apiVersion: security.istio.io/v1beta1
-#kind: AuthorizationPolicy
-#metadata:
-#  name: frontend-auth
-#  namespace: istio-system
-#spec:
-#  selector:
-#    matchLabels:
-#      istio: ingressgateway
-#  action: ALLOW
-#  rules:
-#  - from:
-#    - source:
-#        notRequestPrincipals: ["*"]
-#    to:
-#    - operation:
-#         methods: ["GET"]
-#         paths: ["/demo/*","/storage/files/pub/**"]
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: "jwt-authentication"
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: ingressgateway
+  jwtRules:
+  - issuer: "wm3@redcompany.com.br"
+    jwksUri: "http://auth-service.default.svc.cluster.local:8080/.well-known/jwks.json"
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: "frontend-auth"
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: ingressgateway
+  action: DENY
+  rules:
+  - from:
+    - source:
+        notRequestPrincipals: ["*"]
+    to:
+    - operation:
+    #    #methods: ["GET"]
+        paths: ["/chat/*","/news/*","/socket/*","/notification/*","/storage/*","/up/*"] #"/auth/*","/storage/files/pub/*"

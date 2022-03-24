@@ -19,11 +19,11 @@ subsets:
     ports:
       - port: 2049
 ---
-############### uol-service
+############### test-service
 apiVersion: v1
 kind: Service
 metadata:
-  name: uol-service
+  name: test-service
 spec:
   clusterIP: None
   ports:
@@ -33,7 +33,7 @@ spec:
 apiVersion: v1
 kind: Endpoints
 metadata:
-  name: uol-service
+  name: test-service
 subsets:
   - addresses:
     - ip: 192.168.100.23

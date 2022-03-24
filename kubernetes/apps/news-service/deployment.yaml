@@ -20,18 +20,18 @@ spec:
     spec:
       containers:
       - name: news-service
-        image: wm3/news-service:0.0.9
+        image: wm3/news-service:0.1.0
         imagePullPolicy: IfNotPresent
         ports:
-          - containerPort: 8080
+        - containerPort: 8080
         envFrom:
-          - configMapRef:
-              name: general-configs
-          - configMapRef:
-              name: postgres-configs
-          - configMapRef:
-              name: mongodb-configs
-        env:
+        - configMapRef:
+            name: general-configs
+        - configMapRef:
+            name: postgres-configs
+        - configMapRef:
+            name: mongodb-configs
+        env: null
         resources:
           limits:
             cpu: 100m

@@ -22,7 +22,7 @@ spec:
       - name: auth-service
         ports:
         - containerPort: 8080
-        image: wm3/auth-service:0.1.0
+        image: wm3/auth-service:0.1.2
         imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
@@ -38,6 +38,8 @@ spec:
           value: public_key.pem
         - name: PRIVATE_KEYFILE
           value: private_key.pem
+        - name: JWT_ISSUER
+          value: wm3@redcompany.com.br
         - name: JAVA_OPTS
           value: -server -Dlogging.level.org.springframework=INFO,DEBUG,ERROR -Dlogging.root=INFO,DEBUG,ERROR
         resources:

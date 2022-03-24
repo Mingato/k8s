@@ -24,5 +24,5 @@ kind: ConfigMap
 metadata:
   name: mongodb-configs
 data:
-  MONGODB_APP_URI: mongodb://admin:red321Company@mongo:27017/auth?authSource=admin&readPreference=primary
-  MONGODB_URI: mongodb://admin:red321Company@mongo:27017/auth?authSource=admin&readPreference=primary
+  MONGODB_APP_URI: mongodb://admin:red321Company@mongo:27017/auth?authSource=admin&readPreference=primary&maxIdleTimeMS=36000000
+  MONGODB_URI: mongodb://admin:red321Company@mongo:27017/auth?authSource=admin&readPreference=primary&maxIdleTimeMS=36000000

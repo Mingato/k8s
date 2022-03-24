@@ -20,18 +20,18 @@ spec:
     spec:
       containers:
       - name: chat-service
-        image: wm3/chat-service:0.1.0
+        image: wm3/chat-service:0.1.1
         imagePullPolicy: Never
         ports:
-          - containerPort: 8080
+        - containerPort: 8080
         envFrom:
-          - configMapRef:
-              name: general-configs
-          - configMapRef:
-              name: postgres-configs
-          - configMapRef:
-              name: mongodb-configs
-        env:
+        - configMapRef:
+            name: general-configs
+        - configMapRef:
+            name: postgres-configs
+        - configMapRef:
+            name: mongodb-configs
+        env: null
         resources:
           limits:
             cpu: 100m
