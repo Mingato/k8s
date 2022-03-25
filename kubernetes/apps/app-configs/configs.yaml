@@ -3,10 +3,9 @@ kind: ConfigMap
 metadata:
   name: general-configs
 data:
-  CLIENT_ID: angular
+  CLIENT_ID: userLogin
   CLIENT_SECRET: red_wm3@an6u1@r%
   DOMAIN: https://local.webmodule.com.br
-  TOKNEN_INFO_URI: https://local.webmodule.com.br/auth/oauth/check_token
   PUSH_NOTIFICATION_URL: http://notification-service
   SOCKET_URL: http://socket-service
 ---
@@ -26,3 +25,27 @@ metadata:
 data:
   MONGODB_APP_URI: mongodb://admin:red321Company@mongo:27017/auth?authSource=admin&readPreference=primary&maxIdleTimeMS=36000000
   MONGODB_URI: mongodb://admin:red321Company@mongo:27017/auth?authSource=admin&readPreference=primary&maxIdleTimeMS=36000000
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auth-client-secret
+type: Opaque
+data:
+  password: cmVkX3dtM0BhbjZ1MUByJQ== #echo -n 'red_wm3@an6u1@r%' | base64
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auth-client-secret-mobile
+type: Opaque
+data:
+  password: cmVkX3dtM0BhbjZ1MUByJQ== #echo -n 'red_wm3@an6u1@r%' | base64
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auth-client-secret-internal
+type: Opaque
+data:
+  password: YXBpX3dtM0BwMTVyZTgl #echo -n 'api_wm3@p15re8%' | base64

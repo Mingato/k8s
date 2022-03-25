@@ -16,7 +16,6 @@ spec:
       name: chat-service
       labels:
         app: chat-service
-        version: '0'
     spec:
       containers:
       - name: chat-service

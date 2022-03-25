@@ -163,7 +163,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-configs
+  name: environment-variables
   namespace: argocd
 spec:
   project: default
@@ -323,14 +323,14 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: up-service
+  name: kiali
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
-    path: kubernetes/apps/up-service
+    path: kubernetes/kiali
   destination:
     server: https://kubernetes.default.svc
     namespace: default
@@ -339,7 +339,26 @@ spec:
     automated:
       selfHeal: true
       prune: true
----
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: up-service
+#  namespace: argocd
+#spec:
+#  project: default
+#  source:
+#    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+#    targetRevision: HEAD
+#    path: kubernetes/apps/up-service
+#  destination:
+#    server: https://kubernetes.default.svc
+#    namespace: default
+#  
+#  syncPolicy:
+#    automated:
+#      selfHeal: true
+#      prune: true
+#---
 #apiVersion: argoproj.io/v1alpha1
 #kind: Application
 #metadata:

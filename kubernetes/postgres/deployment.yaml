@@ -40,7 +40,10 @@ spec:
         - name: POSTGRES_USER
           value: "admin"
         - name: POSTGRES_PASSWORD
-          value: "red321Company"
+          valueFrom:
+            secretKeyRef:
+              name: postgres-password
+              key: password
       volumes:
       - name: nfs-storage
         persistentVolumeClaim:

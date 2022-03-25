@@ -17,31 +17,30 @@ spec:
       name: notification-service
       labels:
         app: notification-service
-        version: v1
     spec:
       containers:
       - name: notification-service
-        image: wm3/notification-service
-        imagePullPolicy: IfNotPresent #TODO: Always
+        image: wm3/notification-service:0.0.1
+        imagePullPolicy: IfNotPresent
         ports:
-          - containerPort: 8080
+        - containerPort: 8080
         envFrom:
         - configMapRef:
             name: general-configs
         - configMapRef:
             name: mongodb-configs
         env:
-          - name: NOTIFICATION_EXPIRATION_DATE_DAYS
-            value: "15"
-        livenessProbe: #verificar o health do container
+        - name: NOTIFICATION_EXPIRATION_DATE_DAYS
+          value: '15'
+        livenessProbe:
           httpGet:
-            path: /actuator/health # ver qual caminha para verificar se esta saudavel
+            path: /actuator/health
             port: 8080
           initialDelaySeconds: 300
           periodSeconds: 30
           timeoutSeconds: 60
           failureThreshold: 8
-        readinessProbe: #a aplicação estará pronta para receber requisição a partir do momento que receber sucesso no get do path
+        readinessProbe:
           httpGet:
             path: /actuator/health
             port: 8080
@@ -56,31 +55,3 @@ spec:
           requests:
             cpu: 50m
             memory: 50Mi
-#---
-#versions: https://github.com/kubernetes-sigs/metrics-server/
-#kubectl apply -f components.yaml
-#apiVersion: autoscaling/v2beta2
-#kind: HorizontalPodAutoscaler
-#metadata:
-#  name: notification-service
-#spec:
-#  scaleTargetRef:
-#    apiVersion: apps/v1
-#    kind: Deployment
-#    name: notification-service
-#  minReplicas: 1
-#  maxReplicas: 1
-#  metrics:
-#    - type: Resource
-#      resource:
-#        name: cpu
-#        target:
-#          type: Utilization
-#          averageUtilization: 50
-#  behavior: 
-#    scaleDown: 
-#      stabilizationWindowSeconds: 300
-#      policies: 
-#      - type: Pods
-#        value: 1
-#        periodSeconds: 180

@@ -15,14 +15,13 @@ spec:
     metadata:
       labels:
         app: auth-service
-        version: '5.4'
       name: auth-service
     spec:
       containers:
       - name: auth-service
         ports:
         - containerPort: 8080
-        image: wm3/auth-service:0.1.2
+        image: wm3/auth-service:0.2.0
         imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
@@ -30,10 +29,27 @@ spec:
         - configMapRef:
             name: postgres-configs
         env:
-        - name: CLIENT_ID_API
-          value: api
-        - name: CLIENT_SECRET_API
-          value: api_wm3@p15re8%
+        - name: CLIENT_ID
+          value: "userLogin"
+        - name: CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: auth-client-secret
+              key: password
+        - name: CLIENT_ID_MOBILE
+          value: "userLoginMobile"
+        - name: CLIENT_SECRET_MOBILE
+          valueFrom:
+            secretKeyRef:
+              name: auth-client-secret-mobile
+              key: password
+        - name: CLIENT_ID_INTERNAL
+          value: "internal"
+        - name: CLIENT_SECRET_INTERNAL
+          valueFrom:
+            secretKeyRef:
+              name: auth-client-secret-internal
+              key: password
         - name: PUBLIC_KEY_FILE
           value: public_key.pem
         - name: PRIVATE_KEYFILE
@@ -44,10 +60,10 @@ spec:
           value: -server -Dlogging.level.org.springframework=INFO,DEBUG,ERROR -Dlogging.root=INFO,DEBUG,ERROR
         resources:
           limits:
-            cpu: 100m
+            cpu: 400m
             memory: 300Mi
           requests:
-            cpu: 50m
+            cpu: 150m
             memory: 50Mi
 ---
 apiVersion: autoscaling/v2beta2

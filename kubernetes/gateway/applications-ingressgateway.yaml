@@ -17,12 +17,12 @@ spec:
         number: 443
         name: https
         protocol: HTTPS
-      #tls:
-      #  mode: PASSTHROUGH
       tls:
-        mode: SIMPLE
-        serverCertificate: /home/administrador/projects/docker/kubernetes/gateway/webmodule-crt.crt
-        privateKey: /home/administrador/projects/docker/kubernetes/gateway/webmodule-key.key
+        mode: PASSTHROUGH
+      #tls:
+      #  mode: SIMPLE
+      #  serverCertificate: /home/administrador/projects/docker/kubernetes/gateway/webmodule-crt.crt
+      #  privateKey: /home/administrador/projects/docker/kubernetes/gateway/webmodule-key.key
       #tls:
       #  mode: SIMPLE # enables HTTPS on this port
       #  credentialName: "red@123"

@@ -16,7 +16,6 @@ spec:
       name: news-service
       labels:
         app: news-service
-        version: v1
     spec:
       containers:
       - name: news-service
