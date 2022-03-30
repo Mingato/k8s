@@ -21,7 +21,7 @@ spec:
       - name: auth-service
         ports:
         - containerPort: 8080
-        image: wm3/auth-service:0.2.0
+        image: wm3/auth-service:0.2.1
         imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
@@ -58,6 +58,22 @@ spec:
           value: wm3@redcompany.com.br
         - name: JAVA_OPTS
           value: -server -Dlogging.level.org.springframework=INFO,DEBUG,ERROR -Dlogging.root=INFO,DEBUG,ERROR
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 240
+          periodSeconds: 30
+          timeoutSeconds: 60
+          failureThreshold: 8
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 180
+          periodSeconds: 60
+          timeoutSeconds: 60
+          failureThreshold: 8
         resources:
           limits:
             cpu: 400m

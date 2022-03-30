@@ -20,16 +20,16 @@ subsets:
       - port: 2049
 ---
 ############### test-service
-apiVersion: v1
-kind: Service
-metadata:
-  name: test-service
-spec:
-  clusterIP: None
-  ports:
-  - port: 8080
-    protocol: TCP
----
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: test-service
+#spec:
+#  clusterIP: None
+#  ports:
+#  - port: 8080
+#    protocol: TCP
+#---
 apiVersion: v1
 kind: Endpoints
 metadata:

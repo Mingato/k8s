@@ -5,6 +5,8 @@ metadata:
 spec:
   host: auth-service
   trafficPolicy:
+    #tls:
+    #  mode: PASSTHROUGH
     connectionPool:
       tcp:
         maxConnections: 1000

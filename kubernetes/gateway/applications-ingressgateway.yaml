@@ -18,17 +18,11 @@ spec:
         name: https
         protocol: HTTPS
       tls:
-        mode: PASSTHROUGH
-      #tls:
-      #  mode: SIMPLE
-      #  serverCertificate: /home/administrador/projects/docker/kubernetes/gateway/webmodule-crt.crt
-      #  privateKey: /home/administrador/projects/docker/kubernetes/gateway/webmodule-key.key
-      #tls:
-      #  mode: SIMPLE # enables HTTPS on this port
-      #  credentialName: "red@123"
+        mode: SIMPLE
+        serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+        privateKey: /etc/istio/ingressgateway-certs/tls.key
       hosts:
         - "*"
-        #- "*.webmodule.com.br"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -42,12 +36,117 @@ spec:
   http:
     - match:
       - uri:
+          prefix: /auth/
+      route:
+      - destination:
+          host: auth-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+
+    - match:
+      - uri:
+          prefix: /chat/
+      route:
+      - destination:
+          host: chat-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /chat/
+
+    - match:
+      - uri:
+          prefix: /news/
+      route:
+      - destination:
+
+          host: news-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /news/
+    
+    - match:
+      - uri:
+          prefix: /storage/
+      route:
+      - destination:
+          host: storage-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
+          prefix: /notification/
+      route:
+      - destination:
+          host: notification-service #label
+          #subset: v1
+          port: 
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
+          prefix: /socket/
+      route:
+      - destination:
+          host: socket-service #label
+          #subset: v1
+          port:
+            number: 30000
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
+          prefix: /socket-api/
+      route:
+      - destination:
+          host: socket-service #label
+          #subset: v1
+          port:
+            number: 30001
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+
+    - match:
+      - uri:
+          prefix: /up/
+      route:
+      - destination:
+          host: up-service #label
+          #subset: v1
+          port:
+            number: 8080
+        #weight: 100 # porcentagem de requests que virão para este destino
+      rewrite:
+        uri: /
+    
+    - match:
+      - uri:
           prefix: /
       route:
       - destination:
           host: nginx.default.svc.cluster.local
           #subset: v1
-          port: 
+          port:
             number: 80
         #weight: 100 # porcentagem de requests que virão para este destino
       rewrite:

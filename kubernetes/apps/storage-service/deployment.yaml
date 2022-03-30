@@ -44,22 +44,22 @@ spec:
           requests:
             cpu: 100m
             memory: 50Mi
-        livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 660
-          periodSeconds: 30
-          timeoutSeconds: 60
-          failureThreshold: 8
-        readinessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 600
-          periodSeconds: 60
-          timeoutSeconds: 60
-          failureThreshold: 8
+        #livenessProbe:
+        #  httpGet:
+        #    path: /actuator/health
+        #    port: 8080
+        #  initialDelaySeconds: 660
+        #  periodSeconds: 30
+        #  timeoutSeconds: 60
+        #  failureThreshold: 8
+        #readinessProbe:
+        #  httpGet:
+        #    path: /actuator/health
+        #    port: 8080
+        #  initialDelaySeconds: 600
+        #  periodSeconds: 60
+        #  timeoutSeconds: 60
+        #  failureThreshold: 8
       volumes:
       - name: nfs-storage
         persistentVolumeClaim:

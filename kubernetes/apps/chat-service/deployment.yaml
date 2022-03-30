@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
       - name: chat-service
-        image: wm3/chat-service:0.1.1
-        imagePullPolicy: Never
+        image: wm3/chat-service:0.1.2
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
         envFrom:
@@ -33,10 +33,10 @@ spec:
         env: null
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 300Mi
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 50Mi
 ---
 apiVersion: autoscaling/v2beta2
