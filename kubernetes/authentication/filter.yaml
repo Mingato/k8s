@@ -22,6 +22,7 @@ spec:
         name: my.filters.auth.token_transformer
         typed_config:
           "@type": "type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua"
+          idle_timeout: 24h
           inlineCode: |
             function stringSplit(inputstr, sep)
               if sep == nil then
@@ -34,17 +35,22 @@ spec:
               return t
             end
 
+            function string.starts(String, Start)
+              return string.sub(String, 1, string.len(Start)) == Start
+            end
+            
             function envoy_on_request(request_handle)
               request_handle:logDebug("Hello World")
               headers = request_handle:headers()
 
               path = headers:get(":path")
-              if path == "/health" or path == "/metrics" then
+              if path == "/health" or path == "/metrics" or path == "/auth/oauth/token" or string.starts(path, "/storage/files/pub/") then
+                headers:remove("Authorization")
                 return
               end
 
               cookieString = headers:get("cookie")
-              if cookieString ~= nil then
+              if cookieString ~= nil and headers:get("Authorization") == nil then
                 splitCookieString = stringSplit(cookieString, ";")
                 
                 jwt = nil
@@ -61,5 +67,11 @@ spec:
               end
             end
             function envoy_on_response(response_handle)
-                response_handle:headers():add("my_Filter", "ENVOY funcionou bem")
+              headers = response_handle:headers()
+
+              headers:add("my_Filter", "ENVOY funcionou bem")
+              if not headers:get("X-Frame-Options") then
+                headers:add("X-Frame-Options", "SAMEORIGIN");
+              end
+              headers:replace("X-Frame-Options", "SAMEORIGIN");
             end

@@ -3,13 +3,14 @@ kind: Deployment
 metadata:
   name: auth-service
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: auth-service
   strategy:
     rollingUpdate:
-      maxSurge: 50%
-      maxUnavailable: 50%
+      maxSurge: 75%
+      maxUnavailable: 75%
     type: RollingUpdate
   template:
     metadata:
@@ -21,7 +22,7 @@ spec:
       - name: auth-service
         ports:
         - containerPort: 8080
-        image: wm3/auth-service:0.2.1
+        image: wm3/auth-service:0.2.3
         imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:
@@ -30,21 +31,21 @@ spec:
             name: postgres-configs
         env:
         - name: CLIENT_ID
-          value: "userLogin"
+          value: userLogin
         - name: CLIENT_SECRET
           valueFrom:
             secretKeyRef:
               name: auth-client-secret
               key: password
         - name: CLIENT_ID_MOBILE
-          value: "userLoginMobile"
+          value: userLoginMobile
         - name: CLIENT_SECRET_MOBILE
           valueFrom:
             secretKeyRef:
               name: auth-client-secret-mobile
               key: password
         - name: CLIENT_ID_INTERNAL
-          value: "internal"
+          value: internal
         - name: CLIENT_SECRET_INTERNAL
           valueFrom:
             secretKeyRef:
@@ -60,50 +61,24 @@ spec:
           value: -server -Dlogging.level.org.springframework=INFO,DEBUG,ERROR -Dlogging.root=INFO,DEBUG,ERROR
         livenessProbe:
           httpGet:
-            path: /actuator/health
+            path: /auth/actuator/health
             port: 8080
-          initialDelaySeconds: 240
-          periodSeconds: 30
-          timeoutSeconds: 60
-          failureThreshold: 8
-        readinessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 180
+          initialDelaySeconds: 360
           periodSeconds: 60
           timeoutSeconds: 60
-          failureThreshold: 8
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: /auth/actuator/health
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 60
+          timeoutSeconds: 60
+          failureThreshold: 10
         resources:
           limits:
-            cpu: 400m
-            memory: 300Mi
+            cpu: 200m
+            memory: 1000Mi
           requests:
-            cpu: 150m
-            memory: 50Mi
----
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: auth-service
-spec:
-  behavior:
-    scaleDown:
-      policies:
-      - periodSeconds: 180
-        type: Pods
-        value: 1
-      stabilizationWindowSeconds: 300
-  maxReplicas: 1
-  metrics:
-  - resource:
-      name: cpu
-      target:
-        averageUtilization: 50
-        type: Utilization
-    type: Resource
-  minReplicas: 1
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: auth-service
+            cpu: 80m
+            memory: 400Mi

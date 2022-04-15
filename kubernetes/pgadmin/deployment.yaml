@@ -35,9 +35,9 @@ spec:
             containerPort: 443
             protocol: TCP
         volumeMounts:
-          - name: nfs-storage
-            mountPath: /var/lib/pgadmin
-            subPath: pgadmin
+          #- name: nfs-storage
+          #  mountPath: /var/lib/pgadmin
+          #  subPath: pgadmin
           - name: pgadmin-config
             mountPath: /pgadmin4/servers.json
             subPath: servers.json

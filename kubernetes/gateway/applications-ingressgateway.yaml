@@ -8,12 +8,6 @@ spec:
     istio: ingressgateway # use istio default controller
   servers:
     - port:
-        number: 80
-        name: http-web
-        protocol: HTTP
-      hosts:
-        - "*"
-    - port:
         number: 443
         name: https
         protocol: HTTPS
@@ -39,24 +33,20 @@ spec:
           prefix: /auth/
       route:
       - destination:
-          host: auth-service #label
-          #subset: v1
+          host: auth-service
           port: 
             number: 8080
-        #weight: 100 # porcentagem de requests que virão para este destino
       rewrite:
-        uri: /
+        uri: /auth/
 
     - match:
       - uri:
           prefix: /chat/
       route:
       - destination:
-          host: chat-service #label
-          #subset: v1
-          port: 
+          host: chat-service
+          port:
             number: 8080
-        #weight: 100 # porcentagem de requests que virão para este destino
       rewrite:
         uri: /chat/
 
@@ -85,7 +75,7 @@ spec:
             number: 8080
         #weight: 100 # porcentagem de requests que virão para este destino
       rewrite:
-        uri: /
+        uri: /storage/
     
     - match:
       - uri:
@@ -108,7 +98,7 @@ spec:
           host: socket-service #label
           #subset: v1
           port:
-            number: 30000
+            number: 30001
         #weight: 100 # porcentagem de requests que virão para este destino
       rewrite:
         uri: /
@@ -121,7 +111,7 @@ spec:
           host: socket-service #label
           #subset: v1
           port:
-            number: 30001
+            number: 30000
         #weight: 100 # porcentagem de requests que virão para este destino
       rewrite:
         uri: /

@@ -11,8 +11,8 @@ spec:
       app: storage-service
   strategy:
     rollingUpdate:
-      maxSurge: 50%
-      maxUnavailable: 50%
+      maxSurge: 75%
+      maxUnavailable: 75%
     type: RollingUpdate
   template:
     metadata:
@@ -37,29 +37,29 @@ spec:
           value: storage
         - name: STORE_IN_AWS
           value: 'false'
+        livenessProbe:
+          httpGet:
+            path: /storage/actuator/health
+            port: 8080
+          initialDelaySeconds: 360
+          periodSeconds: 60
+          timeoutSeconds: 60
+          failureThreshold: 8
+        readinessProbe:
+          httpGet:
+            path: /storage/actuator/health
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 60
+          timeoutSeconds: 60
+          failureThreshold: 8
         resources:
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 150m
+            memory: 1300Mi
           requests:
-            cpu: 100m
-            memory: 50Mi
-        #livenessProbe:
-        #  httpGet:
-        #    path: /actuator/health
-        #    port: 8080
-        #  initialDelaySeconds: 660
-        #  periodSeconds: 30
-        #  timeoutSeconds: 60
-        #  failureThreshold: 8
-        #readinessProbe:
-        #  httpGet:
-        #    path: /actuator/health
-        #    port: 8080
-        #  initialDelaySeconds: 600
-        #  periodSeconds: 60
-        #  timeoutSeconds: 60
-        #  failureThreshold: 8
+            cpu: 50m
+            memory: 200Mi
       volumes:
       - name: nfs-storage
         persistentVolumeClaim:

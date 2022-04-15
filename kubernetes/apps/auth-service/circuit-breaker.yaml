@@ -1,20 +1,18 @@
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: auth-service-breaker
-spec:
-  host: auth-service
-  trafficPolicy:
-    #tls:
-    #  mode: PASSTHROUGH
-    connectionPool:
-      tcp:
-        maxConnections: 1000
-      http:
-        http1MaxPendingRequests: 1000
-        maxRequestsPerConnection: 1000
-    outlierDetection:
-      consecutive5xxErrors: 10
-      interval: 1s
-      baseEjectionTime: 3m
-      maxEjectionPercent: 100
+#apiVersion: networking.istio.io/v1alpha3
+#kind: DestinationRule
+#metadata:
+#  name: auth-service-breaker
+#spec:
+#  host: auth-service
+#  trafficPolicy:
+#    connectionPool:
+#      tcp:
+#        maxConnections: 1000
+#      http:
+#        http1MaxPendingRequests: 1000
+#        maxRequestsPerConnection: 1000
+#    outlierDetection:
+#      consecutiveErrors: 10
+#      interval: 1s
+#      baseEjectionTime: 3m
+#      maxEjectionPercent: 100

@@ -13,7 +13,7 @@ metadata:
     app: pgadmin
 type: Opaque
 data:
-  pgadmin-password: "cmVkQDEyMw==" # red@123
+  pgadmin-password: c2VuaGFib2E= # senhaboa
 ---
 apiVersion: v1
 kind: ConfigMap

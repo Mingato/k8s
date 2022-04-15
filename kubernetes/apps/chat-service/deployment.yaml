@@ -3,13 +3,14 @@ kind: Deployment
 metadata:
   name: chat-service
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: chat-service
   strategy:
     rollingUpdate:
-      maxSurge: 50%
-      maxUnavailable: 50%
+      maxSurge: 75%
+      maxUnavailable: 75%
     type: RollingUpdate
   template:
     metadata:
@@ -19,7 +20,7 @@ spec:
     spec:
       containers:
       - name: chat-service
-        image: wm3/chat-service:0.1.2
+        image: wm3/chat-service:0.2.11
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -31,36 +32,26 @@ spec:
         - configMapRef:
             name: mongodb-configs
         env: null
+        livenessProbe:
+          httpGet:
+            path: /chat/actuator/health
+            port: 8080
+          initialDelaySeconds: 360
+          periodSeconds: 30
+          timeoutSeconds: 60
+          failureThreshold: 8
+        readinessProbe:
+          httpGet:
+            path: /chat/actuator/health
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 60
+          timeoutSeconds: 60
+          failureThreshold: 8
         resources:
           limits:
-            cpu: 300m
-            memory: 300Mi
+            cpu: 200m
+            memory: 1500Mi
           requests:
-            cpu: 100m
-            memory: 50Mi
----
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: chat-service
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: chat-service
-  minReplicas: 1
-  maxReplicas: 1
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 50
-  behavior:
-    scaleDown:
-      stabilizationWindowSeconds: 300
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 180
+            cpu: 80m
+            memory: 300Mi

@@ -9,8 +9,8 @@ spec:
       app: up-service
   strategy:
     rollingUpdate:
-      maxSurge: 50%
-      maxUnavailable: 50%
+      maxSurge: 75%
+      maxUnavailable: 75%
     type: RollingUpdate
   template:
     metadata:
@@ -29,6 +29,22 @@ spec:
             name: general-configs
         - configMapRef:
             name: mongodb-configs
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 360
+          periodSeconds: 60
+          timeoutSeconds: 60
+          failureThreshold: 8
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 60
+          timeoutSeconds: 60
+          failureThreshold: 8
         resources:
           limits:
             cpu: 100m

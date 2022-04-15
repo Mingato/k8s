@@ -9,8 +9,8 @@ spec:
       app: notification-service
   strategy:
     rollingUpdate:
-      maxSurge: 50%
-      maxUnavailable: 50%
+      maxSurge: 75%
+      maxUnavailable: 75%
     type: RollingUpdate
   template:
     metadata:
@@ -50,8 +50,8 @@ spec:
           failureThreshold: 8
         resources:
           limits:
-            cpu: 100m
-            memory: 300Mi
+            cpu: 150m
+            memory: 800Mi
           requests:
             cpu: 50m
-            memory: 50Mi
+            memory: 150Mi
