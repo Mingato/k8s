@@ -1,5 +1,6 @@
 CREATE TABLE pub.rwm_usuario (
   id_usuario varchar (12) PRIMARY KEY,
+  envs varchar (100) null,
   perfil integer null,
   cod_usuario varchar (12) null,
   ativo boolean null,
@@ -37,60 +38,69 @@ CREATE TABLE pub.rwm_usuario (
 );
 
 CREATE TABLE pub.rwm_grp (
-  cod_grp varchar (40) PRIMARY KEY,
+  cod_grp varchar (40) not null,
+  env varchar (20) null,
   descricao varchar (60) null,
   ativo boolean null,
   cod_label varchar (30) null,
   cod_cor varchar (30) null,
   tipo varchar (30) null,
   cod_obj_perm varchar (40) null,
-  prioridade integer null
+  prioridade integer null,
+  PRIMARY KEY (cod_grp, env)
 );
 
 CREATE TABLE pub.rwm_circulo (
-  cod_circulo varchar (40) null PRIMARY KEY,
+  cod_circulo varchar (40),
+  env varchar (20) null,
   descricao varchar (60) null,
   ativo boolean null,
   cod_obj_perm varchar (40) null,
   tp_relation varchar (40) null,
-  cod_obj_prop_rel varchar (40) null
+  cod_obj_prop_rel varchar (40) null,
+  PRIMARY KEY (cod_circulo, env)
 );
 
 CREATE TABLE pub.rwm_grp_usr (
   cod_grp varchar (30) null,
   id_usuario varchar (12) null,
-  PRIMARY KEY (cod_grp, id_usuario)
+  env varchar (20) null,
+  PRIMARY KEY (cod_grp, id_usuario, env)
 );
 
 CREATE TABLE pub.rwm_grp_rel (
   cod_circulo varchar (40) null,
   cod_grp varchar (40) null,
   cod_grp_rel varchar (40) null,
+  env varchar (20) null,
   ativo boolean null,
   tp_rel varchar (200) null,
-  PRIMARY KEY (cod_circulo, cod_grp, cod_grp_rel)
+  PRIMARY KEY (cod_circulo, cod_grp, cod_grp_rel, env)
 );
 
 CREATE TABLE pub.rwm_circulo_grp (
   cod_circulo varchar (40) null,
   cod_grp varchar (40) null,
   cod_pai varchar (40) null,
+  env varchar (20) null,
   seq integer null,
   seq_pai integer null,
-  PRIMARY KEY (cod_circulo, cod_grp, cod_pai, seq, seq_pai)
+  PRIMARY KEY (cod_circulo, cod_grp, cod_pai, seq, seq_pai, env)
 );
 
 CREATE TABLE pub.rwm_usuario_rel (
   cod_circulo varchar (40) null,
   id_usuario varchar (12) null,
   id_usuario_rel varchar (12) null,
-  PRIMARY KEY (cod_circulo, id_usuario, id_usuario_rel)
+  env varchar (20) null,
+  PRIMARY KEY (cod_circulo, id_usuario, id_usuario_rel, env)
 );
 
 CREATE TABLE pub.rwm_objeto_perm (
   cod_container varchar (40) null,
   cod_obj varchar (40) null,
   cod_grp varchar (40) null,
+  env varchar (20) null,
   id_usuario varchar (12) null,
   cod_container_ref varchar (40) null,
   cod_obj_ref varchar (40) null,
@@ -98,7 +108,7 @@ CREATE TABLE pub.rwm_objeto_perm (
   tp_permission varchar (40) null,
   cod_objeto_lista varchar (40) null,
   valor text null,
-  PRIMARY KEY (cod_obj,cod_grp,cod_container,id_usuario,cod_container_ref,cod_obj_ref)
+  PRIMARY KEY (cod_obj,cod_grp,cod_container,id_usuario,cod_container_ref,cod_obj_ref,env)
 );
 
 CREATE TABLE pub.rwm_objeto (
@@ -108,6 +118,7 @@ CREATE TABLE pub.rwm_objeto (
   id_usuario varchar (12) null,
   cod_container_ref varchar (40) null,
   cod_obj_ref varchar (40) null,
+  env varchar (20) null,
   tp_behavior varchar (40) null,
   tipo_var varchar (20) null,
   val_date date null,
@@ -145,7 +156,5 @@ CREATE TABLE pub.rwm_objeto (
   dt_last_update_val date null,
   config_replace text null,
   list_prop varchar (1000) null,
-  PRIMARY KEY (cod_obj,cod_grp,cod_container,id_usuario,cod_container_ref,cod_obj_ref)
+  PRIMARY KEY (cod_obj,cod_grp,cod_container,id_usuario,cod_container_ref,cod_obj_ref,env)
 );
-
-

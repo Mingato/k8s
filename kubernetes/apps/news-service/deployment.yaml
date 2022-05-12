@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: news-service
-        image: wm3/news-service:0.3.0
+        image: wm3/news-service:0.3.8
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

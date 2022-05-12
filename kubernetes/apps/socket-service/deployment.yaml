@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: socket-service
-        image: wm3/socket-service:0.0.1
+        image: wm3/socket-service:0.4.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

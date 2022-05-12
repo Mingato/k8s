@@ -1,13 +1,19 @@
-FROM openjdk:8-jdk
+FROM node:12.18.4
 MAINTAINER Gunter Mingato
 
 ARG VERSION
-ARG URL_REPOSITORY
-ENV URL "${URL_REPOSITORY}/service/rest/v1/search/assets/download?version=${VERSION}&repository=maven-releases&name=socket&group=com.redcompany&maven.extension=jar"
 
-RUN echo "URL = ${URL}"
+RUN git config --global http.sslVerify false
+RUN git clone "https://Gunter:b1i2t3@git.webmodule.com.br/scm/wmser/socket.git"
+WORKDIR /socket
 
-RUN curl -L -u admin:admin -X GET "${URL}" -o app.jar
+COPY . .
 
-ENTRYPOINT ["java","-jar","app.jar"]
-EXPOSE 8080
+RUN npm install
+
+RUN npm install -g nodemon
+RUN npm install --save express
+RUN npm install --save jwt-decode
+
+ENTRYPOINT ["npm", "start"]
+EXPOSE 30000 30001

@@ -9,10 +9,11 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 parser=argparse.ArgumentParser()
 #pip install Flask
 #pip install -U flask-cors
-#python3 deployer.py --username "Gunter" --password "b1i2t3" --urlRepository "http://192.168.100.12:8081"
+#python3 deployer.py --username "Gunter" --password "b1i2t3" --urlRepository "http://192.168.100.12:8081" --port 8083
 #Send request curl --location --request POST 'http://192.168.100.236:8080/upload-version/news-service/0.0.7'
 
 def getparameters():
+    parser.add_argument('--port', help='port', type=str, required=True)
     parser.add_argument('--username', help='username', type=str, required=True)
     parser.add_argument('--password', help='password', type=str, required=True)
     parser.add_argument('--urlRepository', help='urlRepository', type=str, required=True)
@@ -32,8 +33,15 @@ def uploadApplicationVersion(aplicationName,version):
     changeDeploymentImageVersion(aplicationName, version)
     commitFile()
 
-    return aplicationName +" version changed!"
+    return aplicationName +" version changed to " + version
 
+@app.route('/start-applications', methods=['POST'])
+def startApplications():
+    print("POST /start-applications")
+
+    deployAllApplications()
+
+    return "Applications started!"
 
 def createDockerImage(aplicationName, version):
     print("\n---------------------------- createDockerImage ----------------------------")
@@ -114,10 +122,30 @@ def commitFile():
 if __name__ == '__main__':
     print("INITIALIZING . . . ")
     getparameters()
-
+    args=parser.parse_args()
+    
     # run() method of Flask class runs the application 
     # on the local development server.
     app.run(debug=True,
             host="0.0.0.0",
-            port=8080,
+            port=args.port,
             threaded=True)
+
+
+def deployAllApplications():
+    #uploadApplicationVersion("auth-service", "0.4.0")
+    uploadApplicationVersion("auth-service", "0.2.5")
+
+    #uploadApplicationVersion("chat-service", "0.4.0")
+    uploadApplicationVersion("chat-service", "0.3.16")
+    
+    #uploadApplicationVersion("news-service", "0.4.0")
+    uploadApplicationVersion("news-service", "0.3.8")
+    
+    uploadApplicationVersion("notification-service", "0.1.2")
+    
+    #uploadApplicationVersion("storage-service", "0.4.0")
+    uploadApplicationVersion("storage-service", "0.0.2")
+    
+    uploadApplicationVersion("socket-service", "0.4.0")
+

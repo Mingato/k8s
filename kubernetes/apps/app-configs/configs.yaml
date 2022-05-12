@@ -6,8 +6,8 @@ data:
   CLIENT_ID: userLogin
   CLIENT_SECRET: red_wm3@an6u1@r%
   DOMAIN: https://local.webmodule.com.br
-  PUSH_NOTIFICATION_URL: http://notification-service
-  SOCKET_URL: http://socket-service
+  PUSH_NOTIFICATION_URL: http://notification-service:8080/notification
+  SOCKET_URL: http://socket-service:8080
 ---
 apiVersion: v1
 kind: ConfigMap

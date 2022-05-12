@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: notification-service
-        image: wm3/notification-service:0.0.1
+        image: wm3/notification-service:0.1.2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -34,17 +34,17 @@ spec:
           value: '15'
         livenessProbe:
           httpGet:
-            path: /actuator/health
+            path: /notification/actuator/health
             port: 8080
-          initialDelaySeconds: 300
+          initialDelaySeconds: 420
           periodSeconds: 30
           timeoutSeconds: 60
           failureThreshold: 8
         readinessProbe:
           httpGet:
-            path: /actuator/health
+            path: /notification/actuator/health
             port: 8080
-          initialDelaySeconds: 240
+          initialDelaySeconds: 360
           periodSeconds: 60
           timeoutSeconds: 60
           failureThreshold: 8
