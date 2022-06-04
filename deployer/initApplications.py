@@ -31,18 +31,18 @@ def uploadApplicationVersion(aplicationName,version):
 
 def deployAllApplications():
     #uploadApplicationVersion("auth-service", "0.4.0")
-    uploadApplicationVersion("auth-service", "0.2.5")
+    uploadApplicationVersion("auth-service", "0.2.6")
 
     #uploadApplicationVersion("chat-service", "0.4.0")
-    uploadApplicationVersion("chat-service", "0.3.16")
+    uploadApplicationVersion("chat-service", "0.3.46")
     
     #uploadApplicationVersion("news-service", "0.4.0")
-    uploadApplicationVersion("news-service", "0.3.8")
+    uploadApplicationVersion("news-service", "0.3.10")
     
-    uploadApplicationVersion("notification-service", "0.1.2")
+    uploadApplicationVersion("notification-service", "0.1.4")
     
     #uploadApplicationVersion("storage-service", "0.4.0")
-    uploadApplicationVersion("storage-service", "0.0.2")
+    uploadApplicationVersion("storage-service", "0.1.1")
     
     uploadApplicationVersion("socket-service", "0.4.0")
 

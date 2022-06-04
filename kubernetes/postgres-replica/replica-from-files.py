@@ -7,14 +7,14 @@ import requests, json, psycopg2
 from psycopg2.extras import RealDictCursor
 from os import walk
 
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+#app = Flask(__name__)
+#CORS(app, resources={r"/*": {"origins": "*"}})
 parser=argparse.ArgumentParser()
 #pip install Flask
 #pip install Requests
 #pip install psycopg2
 #pip install -U flask-cors
-#python3 replica.py --username "gunter@redcompany.com.br" --password "kisphp" --hostname "192.168.100.236" --database "wm3"
+#python3 replica-from-files.py --username "gunter@redcompany.com.br" --password "red321Company" --hostname "192.168.100.236" --database "wm3"
 #Send request curl --location --request POST 'http://localhost:8081/postgres/replica/TestsJson' --header 'Content-Type: application/json' --data-raw '[{"data":"daasdasdasd", "test":"asdasdasd"},{"data":"daasdasdasd", "test":"asdasdasd"}]'
 
 listPrimaryKeyNames = {

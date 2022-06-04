@@ -11,10 +11,21 @@ echo "STARTING WM3 . . . \n"
 
 #init minikube
 echo "----------------------- Create MINIKUNE ----------------------------- "
-minikube start --memory=34096 --cpus=4 --embed-certs
+minikube start --memory=34096 --cpus=4 --vm-driver=xhyve
 minikube -p minikube docker-env
 eval $(minikube docker-env)
-ufw allow 8000:8100/tcp
+sudo ufw allow 8000:8100/tcp
+sudo ufw allow out 8000:8100/tcp
+sudo ufw allow 5432/tcp
+sudo ufw allow out 5432/tcp
+sudo ufw enable
+
+minikube addons enable metrics-server
+#minikube addons enable dashboard
+
+#monitoring
+kubectl create namespace monitoring
+helm install --generate-name stable/prometheus-operator --namespace monitoring --set prometheus.prometheusSpec.serviceMonitorNamespaceSelector.any=true
 
 
 #init istio
@@ -22,8 +33,11 @@ echo "------------------------ Init Istio ----------------------------- "
 cd ../istio-1.13.2
 export PATH=$PWD/bin:$PATH
 istioctl install --set profile=default -y
+#istioctl operator init --watchedNamespaces=istio-system,default
 kubectl label namespace default istio-injection=enabled
 minikube addons enable ingress
+#kubectl aaply -f ./samples/addons/prometheus.yaml
+#kubectl aaply -f ./samples/addons/kiali.yaml
 
 #init tsl config
 echo "---------------------- TLS ssh config ---------------------------- "
@@ -36,6 +50,12 @@ cd ../argocd
 kubectl create namespace argocd
 kubectl apply -n argocd -f instalation
 kubectl apply -f apps
+
+# init prometheus e grafana
+echo "------------------------ Init ArgoCD ----------------------------- "
+cd ../monitoring
+kubectl create -f manifests/setup
+kubectl create -f manifests/
 
 #create application images
 echo "------------------ Create application images ---------------------- "

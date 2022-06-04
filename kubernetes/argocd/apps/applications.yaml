@@ -103,6 +103,46 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: dashboards
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+    targetRevision: HEAD
+    path: kubernetes/dashboards
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+---
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: monitoring
+#  namespace: argocd
+#spec:
+#  project: default
+#  source:
+#    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
+#    targetRevision: HEAD
+#    path: kubernetes/monitoring
+#  destination:
+#    server: https://kubernetes.default.svc
+#    namespace: default
+#  
+#  syncPolicy:
+#    automated:
+#      selfHeal: true
+#      prune: true
+#---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: mongodb
   namespace: argocd
 spec:
@@ -311,26 +351,6 @@ spec:
     repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
     targetRevision: HEAD
     path: kubernetes/apps/socket-service
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: default
-  
-  syncPolicy:
-    automated:
-      selfHeal: true
-      prune: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kiali
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: https://git.webmodule.com.br/scm/wmser/docker.git
-    targetRevision: HEAD
-    path: kubernetes/kiali
   destination:
     server: https://kubernetes.default.svc
     namespace: default

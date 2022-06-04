@@ -9,7 +9,6 @@ spec:
       istio: ingressgateway
   jwtRules:
   - issuer: "wm3@redcompany.com.br"
-    #jwksUri: "http://auth-service.default.svc.cluster.local:8080/.well-known/jwks.json"
     jwksUri: "https://local.webmodule.com.br/cloud/auth/.well-known/jwks.json"
 ---
 apiVersion: security.istio.io/v1beta1
@@ -29,7 +28,7 @@ spec:
     to:
     - operation:
         #methods: ["GET"]
-        notPaths: ["/auth/*","/storage/files/pub/*"]
+        notPaths: ["/auth/*","/storage/pub/*","/storage/PUB/*"]
 ---
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy

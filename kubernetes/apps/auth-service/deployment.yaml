@@ -14,15 +14,18 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      name: auth-service
       labels:
         app: auth-service
-      name: auth-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
     spec:
       containers:
       - name: auth-service
         ports:
         - containerPort: 8080
-        image: wm3/auth-service:0.2.5
+        image: wm3/auth-service:0.2.6
         imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:

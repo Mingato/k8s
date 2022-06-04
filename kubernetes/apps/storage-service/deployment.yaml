@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: storage-service
-        image: wm3/storage-service:0.0.2
+        image: wm3/storage-service:0.1.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -55,11 +55,11 @@ spec:
           failureThreshold: 8
         resources:
           limits:
-            cpu: 150m
-            memory: 1300Mi
+            cpu: 220m
+            memory: 2500Mi
           requests:
-            cpu: 50m
-            memory: 200Mi
+            cpu: 100m
+            memory: 600Mi
       volumes:
       - name: nfs-storage
         persistentVolumeClaim:

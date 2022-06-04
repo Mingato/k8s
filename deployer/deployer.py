@@ -47,6 +47,13 @@ def createDockerImage(aplicationName, version):
     print("\n---------------------------- createDockerImage ----------------------------")
     args=parser.parse_args()
 
+    call("git config --global user.email gunter@redcompany.com.br", shell=True)
+    call("git config --global user.name " + args.username, shell=True)
+    call("git config --global user.password " + args.password, shell=True)
+    call('git config http.sslVerify "false" ', shell=True)
+    
+
+
     imageName = 'wm3/' +aplicationName+":"+version
     command = "eval $(minikube docker-env) && "
     command += 'docker build ./apps/' + aplicationName + ' -t ' + imageName + ' --build-arg VERSION=' + version + ' --build-arg URL_REPOSITORY="' + args.urlRepository + '"'
@@ -134,18 +141,18 @@ if __name__ == '__main__':
 
 def deployAllApplications():
     #uploadApplicationVersion("auth-service", "0.4.0")
-    uploadApplicationVersion("auth-service", "0.2.5")
+    uploadApplicationVersion("auth-service", "0.2.6")
 
     #uploadApplicationVersion("chat-service", "0.4.0")
-    uploadApplicationVersion("chat-service", "0.3.16")
+    uploadApplicationVersion("chat-service", "0.3.46")
     
     #uploadApplicationVersion("news-service", "0.4.0")
-    uploadApplicationVersion("news-service", "0.3.8")
+    uploadApplicationVersion("news-service", "0.3.10")
     
-    uploadApplicationVersion("notification-service", "0.1.2")
+    uploadApplicationVersion("notification-service", "0.1.4")
     
     #uploadApplicationVersion("storage-service", "0.4.0")
-    uploadApplicationVersion("storage-service", "0.0.2")
+    uploadApplicationVersion("storage-service", "0.1.1")
     
     uploadApplicationVersion("socket-service", "0.4.0")
 

@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: socket-service
+  labels:
+    app: socket-service
 spec:
   replicas: 1
   selector:
@@ -17,6 +19,9 @@ spec:
       name: socket-service
       labels:
         app: socket-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
     spec:
       containers:
       - name: socket-service
