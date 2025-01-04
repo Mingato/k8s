@@ -1,11 +1,7 @@
-Here's a `README.md` file based on the provided information:
 
-```markdown
 # Kubernetes Setup Guide
-
 This guide provides step-by-step instructions for setting up Docker, Kubernetes, Minikube, Istio, ArgoCD, and other tools on Ubuntu.
 
----
 
 ## Prerequisites
 
